@@ -1,11 +1,11 @@
-# RedHat 8.10 IC Design VM
+# 芯片设计虚拟机环境及 RTL2GDS
 
 [![Platform](https://img.shields.io/badge/platform-Red%20Hat%20Enterprise%20Linux%208.10-EE0000?logo=redhat&logoColor=white)](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
 [![Virtualization](https://img.shields.io/badge/virtualization-VMware-607078?logo=vmware&logoColor=white)](https://www.vmware.com/)
 [![Design](https://img.shields.io/badge/IC%20design-digital%20%7C%20analog%20%7C%20mixed--signal-0969DA)](#environment-scope)
 [![GitHub stars](https://img.shields.io/github/stars/lizhui20/Redhat-8.10?style=social)](https://github.com/lizhui20/Redhat-8.10/stargazers)
 
-面向数字、模拟和数模混合集成电路设计的 VMware 虚拟机环境。项目提供预配置虚拟机的下载入口、可复现的导入步骤，以及环境核验和故障排查文档。
+基于 Red Hat Enterprise Linux 8.10 的芯片设计 VMware 虚拟机环境，面向数字、模拟和数模混合集成电路设计。项目提供预配置虚拟机的下载入口、可复现的导入步骤、环境核验与故障排查文档，并记录已在虚拟机中实现的 RTL2GDS Flow。
 
 > This repository documents a preconfigured VMware environment for digital, analog, and mixed-signal IC design. See [README_EN.md](README_EN.md) for the English guide.
 
@@ -33,6 +33,14 @@
 
 > [!IMPORTANT]
 > 当前网盘附带指南中披露了默认密码和固定 MAC。维护者应轮换密码并重新发布不含共享硬件标识的镜像；完成前仅在 NAT 或隔离网络中启动，且不要复用指南中的 MAC。
+
+## RTL2GDS Flow
+
+已在本虚拟机环境中实现 RTL2GDS Flow，并使用 `smic18mmrf` 工艺完成示范。记录以 `spi_slave` 为数字流程示例，覆盖逻辑实现、DFT/ATPG、布局布线、形式验证、静态时序分析、DRC/LVS、Signoff 与 GDS 检查；其中 ATPG 截图记录的 stuck-at fault test coverage 为 **99.91%**，形式验证的 **230 个 compare points 全部通过**。
+
+记录同时展示了一个基于 `smic18mmrf` 工艺的 **14-bit、10 MS/s TI SAR ADC** 原理图与版图示例，该设计已完成后仿和 Cadence Signoff 流程。
+
+[下载排版后的 RTL2GDS Flow 记录（DOCX）](docs/RTL2GDS.docx)
 
 ## Environment Scope
 
@@ -102,6 +110,7 @@ cat /etc/os-release
 ## Documentation
 
 - [快速开始](docs/QUICKSTART.md)
+- [RTL2GDS Flow 记录（DOCX）](docs/RTL2GDS.docx)
 - [环境与工具清单](docs/ENVIRONMENT.md)
 - [故障排查](docs/TROUBLESHOOTING.md)
 - [发布与脱敏检查表](docs/RELEASE_CHECKLIST.md)

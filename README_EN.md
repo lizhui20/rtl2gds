@@ -1,6 +1,6 @@
-# RedHat 8.10 IC Design VM
+# IC Design Virtual Machine Environment and RTL2GDS
 
-A preconfigured VMware environment for digital, analog, and mixed-signal IC design. The repository provides the image download location, import instructions, environment inventory tooling, and troubleshooting notes.
+A preconfigured Red Hat Enterprise Linux 8.10 VMware environment for digital, analog, and mixed-signal IC design. The repository provides the image download location, import instructions, environment inventory tooling, troubleshooting notes, and a record of the RTL2GDS flow implemented in the VM.
 
 ## Download
 
@@ -19,6 +19,14 @@ The shared package currently contains the `RedHat8.10/` VM directory and a Chine
 7. Before use, open a terminal and run `lmg`.
 
 The bundled guide discloses a default password and fixed MAC. The maintainer should rotate the password and republish a sanitized image. Until then, boot only on NAT or an isolated network and do not reuse the guide's MAC value.
+
+## RTL2GDS Flow
+
+An RTL2GDS flow has been implemented in this VM and demonstrated with the `smic18mmrf` process. The `spi_slave` digital-flow example covers logic implementation, DFT/ATPG, place and route, formal verification, static timing analysis, DRC/LVS, signoff, and GDS inspection. The captured results show **99.91% stuck-at fault test coverage** and **230 passing formal compare points with no failures**.
+
+The record also presents the schematic and layout of a **14-bit, 10 MS/s TI SAR ADC** implemented with `smic18mmrf`; the design completed post-layout simulation and the Cadence signoff flow.
+
+[Download the formatted RTL2GDS flow record (DOCX)](docs/RTL2GDS.docx)
 
 ## Verify The Environment
 
