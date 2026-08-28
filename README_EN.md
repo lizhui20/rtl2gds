@@ -26,7 +26,7 @@ An RTL2GDS flow has been implemented in this VM and demonstrated with the `smic1
 
 The record also presents the schematic and layout of a **14-bit, 10 MS/s TI SAR ADC** implemented with `smic18mmrf`; the design completed post-layout simulation and the Cadence signoff flow.
 
-[Download the formatted RTL2GDS flow record (DOCX)](docs/RTL2GDS.docx)
+[View the complete RTL2GDS flow record online](docs/RTL2GDS.md) · [Download the formatted DOCX](docs/RTL2GDS.docx)
 
 ## Verify The Environment
 
@@ -40,8 +40,8 @@ cat /etc/os-release
 To collect a reviewable environment inventory:
 
 ```bash
-git clone https://github.com/lizhui20/Redhat-8.10.git
-cd Redhat-8.10
+git clone https://github.com/lizhui20/rtl2gds.git
+cd rtl2gds
 bash scripts/collect-environment.sh
 ```
 

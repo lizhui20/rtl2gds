@@ -3,7 +3,7 @@
 [![Platform](https://img.shields.io/badge/platform-Red%20Hat%20Enterprise%20Linux%208.10-EE0000?logo=redhat&logoColor=white)](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux)
 [![Virtualization](https://img.shields.io/badge/virtualization-VMware-607078?logo=vmware&logoColor=white)](https://www.vmware.com/)
 [![Design](https://img.shields.io/badge/IC%20design-digital%20%7C%20analog%20%7C%20mixed--signal-0969DA)](#environment-scope)
-[![GitHub stars](https://img.shields.io/github/stars/lizhui20/Redhat-8.10?style=social)](https://github.com/lizhui20/Redhat-8.10/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/lizhui20/rtl2gds?style=social)](https://github.com/lizhui20/rtl2gds/stargazers)
 
 基于 Red Hat Enterprise Linux 8.10 的芯片设计 VMware 虚拟机环境，面向数字、模拟和数模混合集成电路设计。项目提供预配置虚拟机的下载入口、可复现的导入步骤、环境核验与故障排查文档，并记录已在虚拟机中实现的 RTL2GDS Flow。
 
@@ -17,7 +17,7 @@
 
 网盘当前包含 `RedHat8.10/` 虚拟机目录和 `虚拟机使用方法.docx`。核心磁盘 `RHEL8_ICA-disk1.vmdk` 约为 **389 GB（362 GiB）**；请使用网盘客户端完整下载，并至少预留 **500 GiB** 可用空间。虚拟磁盘的配置容量为 1 TB。
 
-下载链接由第三方网盘托管，失效或文件不完整时请[提交 Issue](https://github.com/lizhui20/Redhat-8.10/issues/new/choose)，不要从未知来源获取修改版镜像。
+下载链接由第三方网盘托管，失效或文件不完整时请[提交 Issue](https://github.com/lizhui20/rtl2gds/issues/new/choose)，不要从未知来源获取修改版镜像。
 
 ## Quick Start
 
@@ -40,7 +40,7 @@
 
 记录同时展示了一个基于 `smic18mmrf` 工艺的 **14-bit、10 MS/s TI SAR ADC** 原理图与版图示例，该设计已完成后仿和 Cadence Signoff 流程。
 
-[下载排版后的 RTL2GDS Flow 记录（DOCX）](docs/RTL2GDS.docx)
+[在线查看 RTL2GDS Flow 完整记录](docs/RTL2GDS.md) · [下载排版后的 DOCX](docs/RTL2GDS.docx)
 
 ## Environment Scope
 
@@ -75,8 +75,8 @@ flowchart LR
 进入虚拟机后运行：
 
 ```bash
-git clone https://github.com/lizhui20/Redhat-8.10.git
-cd Redhat-8.10
+git clone https://github.com/lizhui20/rtl2gds.git
+cd rtl2gds
 bash scripts/collect-environment.sh
 ```
 
@@ -110,7 +110,7 @@ cat /etc/os-release
 ## Documentation
 
 - [快速开始](docs/QUICKSTART.md)
-- [RTL2GDS Flow 记录（DOCX）](docs/RTL2GDS.docx)
+- [RTL2GDS Flow 记录（在线查看）](docs/RTL2GDS.md) · [DOCX 下载](docs/RTL2GDS.docx)
 - [环境与工具清单](docs/ENVIRONMENT.md)
 - [故障排查](docs/TROUBLESHOOTING.md)
 - [发布与脱敏检查表](docs/RELEASE_CHECKLIST.md)
