@@ -1,0 +1,14 @@
+# Environment reports may contain host-specific or sensitive paths.
+environment-report.txt
+
+# VMware runtime state and logs do not belong in this documentation repository.
+*.lck/
+*.log
+*.scoreboard
+*.vmem
+*.vmss
+
+# Editor and operating-system metadata.
+.DS_Store
+Thumbs.db
+*~

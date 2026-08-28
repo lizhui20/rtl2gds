@@ -1,0 +1,58 @@
+name: 虚拟机问题报告
+description: 报告下载、导入、启动或工具入口问题
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先删除账号、IP、项目路径、客户信息和设计数据。
+  - type: dropdown
+    id: stage
+    attributes:
+      label: 问题阶段
+      options:
+        - 下载或文件完整性
+        - OVF 导入
+        - VMX 打开
+        - 系统启动或登录
+        - lmg 启动
+        - EDA 工具运行
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: 宿主机系统
+      placeholder: 例如 Windows 11 24H2
+    validations:
+      required: true
+  - type: input
+    id: vmware
+    attributes:
+      label: VMware 产品和版本
+      placeholder: 例如 VMware Workstation 17.x
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述
+      description: 写明操作步骤、预期结果和实际结果。
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: 错误信息
+      description: 粘贴完整但已脱敏的错误文本。
+      render: shell
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 安全确认
+      options:
+        - label: 我已删除凭据、私钥、客户信息和未公开的 PDK 内容。
+          required: true
