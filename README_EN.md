@@ -34,7 +34,7 @@ The digital example uses **`spi_slave` and TSMC 28HPC+ (N28)**, with 7-track sta
 
 ### GDS Layout
 
-![SPI postfill GDS in Calibre DESIGNrev](docs/images/rtl2gds/gds_postfill_2026-09-05.png)
+![SPI postfill GDS in Calibre DESIGNrev](docs/images/rtl2gds/gds_postfill_2026-09-06.png)
 
 ### 12-Scenario PrimeTime GUI
 

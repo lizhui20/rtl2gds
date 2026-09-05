@@ -50,7 +50,7 @@
 
 ### GDS 实图
 
-![SPI 在 Calibre DESIGNrev 中打开的填充后 GDS](docs/images/rtl2gds/gds_postfill_2026-09-05.png)
+![SPI 在 Calibre DESIGNrev 中打开的填充后 GDS](docs/images/rtl2gds/gds_postfill_2026-09-06.png)
 
 ### 十二场景 PT GUI
 

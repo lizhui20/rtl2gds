@@ -8,7 +8,7 @@
 
 ### GDS 版图
 
-![Calibre DESIGNrev 中打开的 SPI 填充后 GDS 全图](images/rtl2gds/gds_postfill_2026-09-05.png)
+![Calibre DESIGNrev 中打开的 SPI 填充后 GDS 全图](images/rtl2gds/gds_postfill_2026-09-06.png)
 
 `spi_slave.pnr.dummy.gds` 在 Calibre DESIGNrev 中打开，展示标准单元、时钟与信号布线、电源结构和 dummy fill。合并后的版图顶层为 `merge_spi_slave`。
 
