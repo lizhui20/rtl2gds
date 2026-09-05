@@ -26,6 +26,10 @@
 
 ![签核结果目录](images/rtl2gds/image7.png)
 
+## 最新 GDS 视图（TSMC N28）
+
+![Calibre DESIGNrev 中打开的 SPI 填充后 GDS 全图](images/rtl2gds/gds_postfill_2026-09-06.png)
+
 ## GDS 视图(smic18mmrf)
 
 ![GDS 版图视图](images/rtl2gds/image8.png)
