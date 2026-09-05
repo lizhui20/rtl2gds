@@ -13,7 +13,7 @@
 
 | 下载源 | 链接 | 提取码 |
 | --- | --- | --- |
-| 百度网盘 | [打开分享](https://pan.baidu.com/s/1-8x7LnedM-ATdbUHXocRAw?pwd=hs1t) | `hs1t` |
+| 百度网盘 | [打开分享](https://pan.baidu.com/s/1wqB7OsjWHtzFlZPJBeHAaQ?pwd=ekdi) | `ekdi` |
 
 网盘当前包含 `RedHat8.10/` 虚拟机目录和 `虚拟机使用方法.docx`。核心磁盘 `RHEL8_ICA-disk1.vmdk` 约为 **389 GB（362 GiB）**；请使用网盘客户端完整下载，并至少预留 **500 GiB** 可用空间。虚拟磁盘的配置容量为 1 TB。
 
@@ -36,11 +36,13 @@
 
 ## RTL2GDS Flow
 
-已在本虚拟机环境中实现 RTL2GDS Flow，并使用 `smic18mmrf` 工艺完成示范。记录以 `spi_slave` 为数字流程示例，覆盖逻辑实现、DFT/ATPG、布局布线、形式验证、静态时序分析、DRC/LVS、Signoff 与 GDS 检查；其中 ATPG 截图记录的 stuck-at fault test coverage 为 **99.91%**，形式验证的 **230 个 compare points 全部通过**。
+已在本虚拟机环境中实现 RTL2GDS Flow，并使用 `smic18mmrf` 工艺完成示范。记录以 `spi_slave` 为数字流程示例，覆盖逻辑实现、DFT/ATPG、布局布线、形式验证、寄生参数提取、PrimeTime 静态时序分析、RedHawk 静态 IR-drop 分析、Calibre DRC/antenna/LVS、post-layout ATPG 与 GDS 检查；其中 ATPG 截图记录的 stuck-at fault test coverage 为 **99.91%**，形式验证的 **230 个 compare points 全部通过**，PrimeTime 截图所示 8 个 endpoint group 均无 negative-slack endpoint。
+
+文档同时保留未闭环项：ATPG 有 `N23` warning，Calibre DRC 显示 3 条待分类/waiver 的 warning，RedHawk 最低可见电源节点约为 0.7929 V、仍须按项目 IR-drop limit 判定。截图结果不会被笼统表述成“全部 signoff clean”。
 
 记录同时展示了一个基于 `smic18mmrf` 工艺的 **14-bit、10 MS/s TI SAR ADC** 原理图与版图示例，该设计已完成后仿和 Cadence Signoff 流程。
 
-[在线查看 RTL2GDS Flow 完整记录](docs/RTL2GDS.md) · [下载排版后的 DOCX](docs/RTL2GDS.docx)
+[在线查看 RTL2GDS Flow 完整记录（最新版）](docs/RTL2GDS.md) · [下载初版 DOCX 存档](docs/RTL2GDS.docx)
 
 ## Environment Scope
 

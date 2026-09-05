@@ -16,7 +16,7 @@
 
 ## 2. 下载与完整性检查
 
-1. 打开[百度网盘分享](https://pan.baidu.com/s/1-8x7LnedM-ATdbUHXocRAw?pwd=hs1t)，提取码为 `hs1t`。
+1. 打开[百度网盘分享](https://pan.baidu.com/s/1wqB7OsjWHtzFlZPJBeHAaQ?pwd=ekdi)，提取码为 `ekdi`。
 2. 使用百度网盘客户端下载完整的 `RedHat8.10/` 目录和 `虚拟机使用方法.docx`。
 3. 确认 `RHEL8_ICA-disk1.vmdk` 下载完成，显示大小约 389 GB（362 GiB）。
 4. 保持 OVF、VMX、VMDK、NVRAM 和清单文件位于同一目录，不要单独改名。
