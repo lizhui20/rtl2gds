@@ -26,7 +26,7 @@
 
 ![签核结果目录](images/rtl2gds/image7.png)
 
-## GDS 视图
+## GDS 视图(smic18mmrf)
 
 ![GDS 版图视图](images/rtl2gds/image8.png)
 
