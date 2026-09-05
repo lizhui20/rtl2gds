@@ -1,0 +1,278 @@
+{
+  "record_date": "2026-09-05",
+  "design": "spi_slave",
+  "digital_pdk": "tsmc28hpcplus",
+  "be_pt": [
+    {
+      "mode": "func",
+      "corner": "ssg0p81v125c",
+      "setup_violating_paths": "0",
+      "hold_violating_paths": "0",
+      "timing_status": "pass"
+    },
+    {
+      "mode": "scan_shift",
+      "corner": "ssg0p81v125c",
+      "setup_violating_paths": "0",
+      "hold_violating_paths": "0",
+      "timing_status": "pass"
+    },
+    {
+      "mode": "scan_capture",
+      "corner": "ssg0p81v125c",
+      "setup_violating_paths": "0",
+      "hold_violating_paths": "0",
+      "timing_status": "pass"
+    }
+  ],
+  "pr_sta": {
+    "scenario_count": "12",
+    "mode_count": "3",
+    "setup_max_delay_violating_paths": "0",
+    "hold_min_delay_violating_paths": "0",
+    "max_transition_violations": "0",
+    "max_capacitance_violations": "0",
+    "max_fanout_violations": "0"
+  },
+  "dmsa": {
+    "scenario_count": 12,
+    "timing_status": "pass",
+    "before": {
+      "setup": 0,
+      "hold": 0
+    }
+  },
+  "atpg": {
+    "be": {
+      "patterns": 201,
+      "test_coverage_percent": 97.12
+    },
+    "postlayout": {
+      "patterns": 205,
+      "test_coverage_percent": 97.0
+    },
+    "postlayout_replay": {
+      "status": "PASS",
+      "patterns": "205",
+      "timing_checks": "on",
+      "sdf_file": "spi_slave.ss_hot_lowv_setup.sdf",
+      "skipped": 0,
+      "mismatches": 0
+    }
+  },
+  "pnr_formality": "Verification SUCCEEDED",
+  "postfill_lvs": "CORRECT",
+  "antenna_result_counts": {
+    "ant": 0,
+    "mim_ant": 0
+  },
+  "redhawk": [
+    {
+      "corner": "tt0p8v85c",
+      "static_drop_percent": 0.0125,
+      "static_status": "pass",
+      "dynamic_drop_percent": 0.8875,
+      "dynamic_status": "pass",
+      "net_coverage_percent": 100.0,
+      "input_coverage_percent": 100.0
+    },
+    {
+      "corner": "tt0p9v85c",
+      "static_drop_percent": 0.011111,
+      "static_status": "pass",
+      "dynamic_drop_percent": 0.9,
+      "dynamic_status": "pass",
+      "net_coverage_percent": 100.0,
+      "input_coverage_percent": 100.0
+    },
+    {
+      "corner": "ffg0p88v125c",
+      "static_drop_percent": 0.034091,
+      "static_status": "pass",
+      "dynamic_drop_percent": 1.340909,
+      "dynamic_status": "pass",
+      "net_coverage_percent": 100.0,
+      "input_coverage_percent": 100.0
+    },
+    {
+      "corner": "ffg0p99v125c",
+      "static_drop_percent": 0.040404,
+      "static_status": "pass",
+      "dynamic_drop_percent": 1.515152,
+      "dynamic_status": "pass",
+      "net_coverage_percent": 100.0,
+      "input_coverage_percent": 100.0
+    }
+  ],
+  "regressions": [
+    {
+      "suite": "tests.log",
+      "tests": 35,
+      "status": "pass"
+    },
+    {
+      "suite": "be_tests.log",
+      "tests": 12,
+      "status": "pass"
+    },
+    {
+      "suite": "completion_tests.log",
+      "tests": 12,
+      "status": "pass"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "docs/images/rtl2gds/gds_postfill_2026-09-05.png",
+      "source": "Maintainer-provided GUI screenshot",
+      "sha256": "756287a3093192077a5d4172b38cf4df6470b12b51835bc1d21bf12612f32efe"
+    },
+    {
+      "file": "docs/images/rtl2gds/pt_dmsa_12_scenarios_2026-09-05.png",
+      "source": "Maintainer-provided GUI screenshot",
+      "sha256": "f03d9fa4d5c594e05aeb5a8553d0766bc70fd94533232d05d120c409d9d4f841"
+    }
+  ],
+  "source_reports": [
+    {
+      "file": "be_env/spi_slave/reports/pt/func/pt.summary.rpt",
+      "sha256": "bc931be91e4e1d8248acbdd2b52ce44b6325fe5c2e65953f0de03ee494508d27",
+      "modified_utc": "2026-09-05T14:21:24.112824+00:00"
+    },
+    {
+      "file": "be_env/spi_slave/reports/pt/scan_shift/pt.summary.rpt",
+      "sha256": "33482d5a35671f9e0098de0d2ecf025698e007d1e4b90e3c87497f4b924e0258",
+      "modified_utc": "2026-09-05T14:21:35.419942+00:00"
+    },
+    {
+      "file": "be_env/spi_slave/reports/pt/scan_capture/pt.summary.rpt",
+      "sha256": "51d86bad58f0141c396768ecb1af42bdc8a214fbda37a8bcd790b9d7f0d3d08d",
+      "modified_utc": "2026-09-05T14:21:47.631069+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/pt/pt.signoff_summary.rpt",
+      "sha256": "fd52c7e6eac1c1831f0b4f7ddd69b39168969a694447cb0dc733a6bec17a7c9d",
+      "modified_utc": "2026-09-05T14:25:10.878184+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/pt_dmsa/summary.json",
+      "sha256": "4c010b28c2805ffdeeb1ab393e26ae7fa519d6e78c80ca3c5c75dabb898a789a",
+      "modified_utc": "2026-09-05T15:31:49.422790+00:00"
+    },
+    {
+      "file": "be_env/spi_slave/reports/dft/spi_slave.atpg_summary.rpt",
+      "sha256": "5d3f9d224313e7eab2a73c3f4f1040024f8a1606ac3614a819cf7db28571cbd1",
+      "modified_utc": "2026-08-30T02:04:02.349714+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/atpg_postlayout/spi_slave.atpg_postlayout_summary.rpt",
+      "sha256": "99a809e8ea21d0c44acceb31c65db567d32c54701c81d559961c127ddabbc82d",
+      "modified_utc": "2026-09-05T03:15:00.899499+00:00"
+    },
+    {
+      "file": "vcs_sim/vcs/out/spi_slave/atpg_postlayout/result.txt",
+      "sha256": "f79e2c44b418104b394687d3738fc03cb3acdc4c2bb172b4ef37a9db710ed52a",
+      "modified_utc": "2026-09-05T10:54:43.775796+00:00"
+    },
+    {
+      "file": "vcs_sim/vcs/out/spi_slave/atpg_postlayout/sim.log",
+      "sha256": "e3ab5dfaa430411fe28a93ac6a021bfce3438a2998fbc41a8e720fff83c54e97",
+      "modified_utc": "2026-09-05T10:54:43.730796+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/fm/fm.verify.rpt",
+      "sha256": "36d6e1d44a78488e10eeebc8691740ef7f90f617937dbf4df97afed597b14666",
+      "modified_utc": "2026-08-30T07:56:18.984464+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/lvs/spi_slave.lvs.report",
+      "sha256": "eea003c53e2bd18c86822af17ab8988c79dabaa565aa26f8bbcb44bf0b429a28",
+      "modified_utc": "2026-09-05T05:10:25.476639+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/antenna/spi_slave.ant.summary",
+      "sha256": "92f1da5b904135a1980db4079bb428795a2d6622853500c865392e734e2361bf",
+      "modified_utc": "2026-08-30T07:09:31.733699+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/antenna/spi_slave.mim_ant.summary",
+      "sha256": "70bf2c566e3b3d29803123d0ab67ec3114ebc6e8b0f00f450da3b4fe79e687bb",
+      "modified_utc": "2026-08-30T07:09:37.549751+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/static/tt0p8v85c/spi_slave.static_ir_gate.summary",
+      "sha256": "bcae05ce4dcbcec337be7f9776059123db02b79b5b4bfacc796d531b6b61cbbf",
+      "modified_utc": "2026-08-29T16:02:19.969005+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/dynamic/tt0p8v85c/spi_slave.dynamic_ir_gate.summary",
+      "sha256": "ce04d43e0e19ca5c7a9dbbb06ab5b7d73d583a05c5a573fc554c1bb6db32ec7a",
+      "modified_utc": "2026-08-29T16:05:00.156397+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/dynamic/tt0p8v85c/spi_slave.activity_gate.summary",
+      "sha256": "f1246a903f856f746ef0a68cefdbe41106b51d19120c49725dddb1b1d302c551",
+      "modified_utc": "2026-08-29T16:05:00.141397+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/static/tt0p9v85c/spi_slave.static_ir_gate.summary",
+      "sha256": "c7d59e02143ad12f2cf824e56e3a33da6c0c84d554a87631053957f1da6d1abf",
+      "modified_utc": "2026-08-29T16:02:19.984005+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/dynamic/tt0p9v85c/spi_slave.dynamic_ir_gate.summary",
+      "sha256": "f9cc8fd840675f05448b0e74ca15fde9e56533355736b2637bd8fde2eb2235b0",
+      "modified_utc": "2026-08-29T16:05:00.199398+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/dynamic/tt0p9v85c/spi_slave.activity_gate.summary",
+      "sha256": "f1246a903f856f746ef0a68cefdbe41106b51d19120c49725dddb1b1d302c551",
+      "modified_utc": "2026-08-29T16:05:00.185397+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/static/ffg0p88v125c/spi_slave.static_ir_gate.summary",
+      "sha256": "2ef7de45b5cffcef6b6a68dc2f4075c711050bf576615a3e79de8a2e7ae46be7",
+      "modified_utc": "2026-08-29T16:02:20.001005+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/dynamic/ffg0p88v125c/spi_slave.dynamic_ir_gate.summary",
+      "sha256": "7a295424dc1c44c58007382234d22fc0821684870cf7d8b3e2c25caa8671c1c6",
+      "modified_utc": "2026-08-29T16:05:00.247398+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/dynamic/ffg0p88v125c/spi_slave.activity_gate.summary",
+      "sha256": "f1246a903f856f746ef0a68cefdbe41106b51d19120c49725dddb1b1d302c551",
+      "modified_utc": "2026-08-29T16:05:00.229398+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/static/ffg0p99v125c/spi_slave.static_ir_gate.summary",
+      "sha256": "0b83aa0471105a5bc8a78ba7e020b5770af2da30174d51329a7a328e1a834eed",
+      "modified_utc": "2026-08-29T16:02:20.022006+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/dynamic/ffg0p99v125c/spi_slave.dynamic_ir_gate.summary",
+      "sha256": "101c29e32d82a4083c68d90422f02fc6210038fd068f64a04bfc5737a2530553",
+      "modified_utc": "2026-08-29T16:05:00.299398+00:00"
+    },
+    {
+      "file": "pr_env/spi_slave/reports/signoff/redhawk/dynamic/ffg0p99v125c/spi_slave.activity_gate.summary",
+      "sha256": "f1246a903f856f746ef0a68cefdbe41106b51d19120c49725dddb1b1d302c551",
+      "modified_utc": "2026-08-29T16:05:00.281398+00:00"
+    },
+    {
+      "file": "pr_env/reports/flow_portability/2026-09-05/tests.log",
+      "sha256": "1c4a0c5f750899ee8133d38c1ebbbb655b00f4f61be8962250ec90e1514137b7",
+      "modified_utc": "2026-09-05T16:24:40.733788+00:00"
+    },
+    {
+      "file": "pr_env/reports/flow_portability/2026-09-05/be_tests.log",
+      "sha256": "5bd386aba76ce69ef172b6d485be395bd41abf8f9f21fc9c2b747ae8cfa567e7",
+      "modified_utc": "2026-09-05T16:24:40.733788+00:00"
+    },
+    {
+      "file": "pr_env/reports/flow_portability/2026-09-05/completion_tests.log",
+      "sha256": "7d148cc9e286306bbc87ff026a52da5b0300d9435b5e50616966688d89853948",
+      "modified_utc": "2026-09-05T16:24:40.733788+00:00"
+    }
+  ]
+}

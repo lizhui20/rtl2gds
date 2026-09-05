@@ -36,13 +36,31 @@
 
 ## RTL2GDS Flow
 
-已在本虚拟机环境中实现 RTL2GDS Flow，并使用 `smic18mmrf` 工艺完成示范。记录以 `spi_slave` 为数字流程示例，覆盖逻辑实现、DFT/ATPG、布局布线、形式验证、寄生参数提取、PrimeTime 静态时序分析、RedHawk 静态 IR-drop 分析、Calibre DRC/antenna/LVS、post-layout ATPG 与 GDS 检查；其中 ATPG 截图记录的 stuck-at fault test coverage 为 **99.91%**，形式验证的 **230 个 compare points 全部通过**，PrimeTime 截图所示 8 个 endpoint group 均无 negative-slack endpoint。
+以 **`spi_slave` + TSMC 28HPC+（N28）** 为数字实例，串联 RTL 仿真、静态检查、FC 综合、DFT/ATPG、布局布线、StarRC 提取、PrimeTime、Formality、Calibre 和 RedHawk，形成从 RTL 到 GDS 的工程流程。
 
-文档同时保留未闭环项：ATPG 有 `N23` warning，Calibre DRC 显示 3 条待分类/waiver 的 warning，RedHawk 最低可见电源节点约为 0.7929 V、仍须按项目 IR-drop limit 判定。截图结果不会被笼统表述成“全部 signoff clean”。
+### 项目亮点
 
-记录同时展示了一个基于 `smic18mmrf` 工艺的 **14-bit、10 MS/s TI SAR ADC** 原理图与版图示例，该设计已完成后仿和 Cadence Signoff 流程。
+- **统一工程入口**：`gmake <target> b=<design>` 连接 `be_env`、`pr_env` 和 `vcs_sim`，支持阶段重跑、GUI 调试和按设计管理产物。
+- **三模式约束贯通**：BE 分别运行功能、扫描移位和扫描捕获 PT，输出三份完整 SDC，由 PR 软链接并用于 MCMM、STA 和 ECO。
+- **十二场景时序分析**：三模式 × 四个 SS/FF 温度与寄生组合；PnR 加入 TT 功耗角，共 13 场景，PT GUI 可同时查看十二场景路径。
+- **PT 联合 ECO**：DMSA 联合求解 setup/hold，导出独立 `eco.tcl`，FC 完成应用、合法化与 ECO 布线。
+- **DFT 时序回放**：扫描插链、ATPG、STIL 转换和带 SDF 的布局后 VCS 回放串联，现有结果为 **205 patterns、0 mismatch**。
+- **物理验证与四角 IR**：GDS merge、dummy fill、DRC/LVS/antenna、FM 和活动驱动的 RedHawk static/dynamic 分析。
+- **配置与结果管理**：矩形/L 形 floorplan、IO、Vt、CTS、DFT、ECO 和 IR 参数集中设置，配合逐场景报告、输入指纹及完成检查。
 
-[在线查看 RTL2GDS Flow 完整记录（最新版）](docs/RTL2GDS.md) · [下载初版 DOCX 存档](docs/RTL2GDS.docx)
+### GDS 实图
+
+![SPI 在 Calibre DESIGNrev 中打开的填充后 GDS](docs/images/rtl2gds/gds_postfill_2026-09-05.png)
+
+### 十二场景 PT GUI
+
+![PrimeTime 十二场景路径集合](docs/images/rtl2gds/pt_dmsa_12_scenarios_2026-09-05.png)
+
+图中功能、扫描移位、扫描捕获的十二个场景集合均显示 `NVP=0`、`WNS=0.000`、`TNS=0.000`。工程同时记录了 PnR Formality 等价通过、Calibre LVS `CORRECT`、四角 IR 分析和 **59 项工程回归测试通过**。
+
+[查看完整 RTL2GDS 流程与命令](docs/RTL2GDS.md) · [查看各阶段截图](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [下载初版 DOCX](docs/RTL2GDS.docx)
+
+项目还展示基于 **SMIC 0.18µm RF** 的 **14-bit、10 MS/s TI SAR ADC** 原理图、版图与后仿案例，覆盖数字、模拟和混合信号设计工作流。
 
 ## Environment Scope
 
@@ -53,7 +71,7 @@
 | Cadence | Virtuoso IC、Spectre、Liberate | IC 23.1、Spectre 24.1、Liberate 23.1 |
 | Synopsys | VCS、Verdi、HSPICE、Design Compiler、Formality、Fusion Compiler、PrimeTime、Library Compiler | 主要为 W-2024.09-SP1 / SP3 |
 | Synopsys | SpyGlass、TestMAX、VC Static、StarRC、PrimePower RTL、RTL Architect、WaveView | W-2024.09 系列；另有 StarRC U-2022.12-SP5-2 |
-| Siemens EDA | Calibre | 2025.1_16.10 |
+| Siemens EDA | Calibre、Tessent STILVerify | 2025.1_16.10、Tessent 2025.4 |
 
 这些安装覆盖 RTL 仿真与调试、综合与形式验证、静态时序与功耗、数字实现、SPICE 仿真、模拟版图及物理验证等工作流。当前表格记录已检测到的安装目录，具体模块状态以虚拟机内的实测结果为准。
 
@@ -61,9 +79,12 @@
 flowchart LR
     RTL[RTL design] --> SIM[VCS simulation]
     SIM --> DBG[Verdi debug]
-    DBG --> SYN[Design Compiler]
+    DBG --> SYN[Fusion Compiler synthesis]
     SYN --> IMP[Fusion Compiler]
-    IMP --> STA[PrimeTime / StarRC]
+    IMP --> STA[StarRC / PrimeTime DMSA]
+    STA --> ECO[Joint ECO / FC implementation]
+    IMP --> PV2[Calibre DRC / LVS / antenna]
+    SIM --> PI[FSDB / RedHawk IR]
 
     SCH[Analog schematic] --> SPICE[Spectre / HSPICE]
     SPICE --> LAY[Virtuoso layout]
@@ -72,7 +93,7 @@ flowchart LR
     SIM -. mixed-signal verification .-> SPICE
 ```
 
-当前虚拟机内部已经确认 RHEL 8.10、VMware 虚拟硬件和上述安装目录。PDK、标准单元库和端到端设计流程仍需继续整理为可复现清单。
+当前虚拟机内部已经确认 RHEL 8.10、VMware 虚拟硬件和上述安装目录。数字流程采用 N28 工艺配置，具体阶段、输入输出和运行命令见 [RTL2GDS 文档](docs/RTL2GDS.md)。
 
 进入虚拟机后运行：
 

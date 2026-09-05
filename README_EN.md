@@ -22,13 +22,29 @@ The bundled guide discloses a default password and fixed MAC. The maintainer sho
 
 ## RTL2GDS Flow
 
-An RTL2GDS flow has been implemented in this VM and demonstrated with the `smic18mmrf` process. The `spi_slave` example covers logic implementation, DFT/ATPG, place and route, formal verification, parasitic extraction, PrimeTime static timing analysis, RedHawk static IR-drop analysis, Calibre DRC/antenna/LVS, post-layout ATPG, and GDS inspection. The captures show **99.91% stuck-at fault test coverage**, **230 passing formal compare points with no failures**, and no negative-slack endpoints in the eight PrimeTime endpoint groups shown.
+The digital example uses **`spi_slave` and TSMC 28HPC+ (N28)**, with 7-track standard cells and a 9-metal 4X2Y2R stack. The project connects RTL simulation, static checks, synthesis, DFT/ATPG, place and route, parasitic extraction, timing analysis, ECO, physical verification, and power integrity analysis.
 
-The record also preserves open review items instead of describing the run as universally signoff-clean: ATPG reports an `N23` warning, Calibre DRC shows three warnings that require classification or waiver, and the lowest visible RedHawk power node is about 0.7929 V and must be judged against the project's IR-drop limit.
+- **One command interface:** `gmake <target> b=<design>` across `be_env`, `pr_env`, and `vcs_sim`, with per-design outputs and stage recovery.
+- **Three-mode constraints:** BE PrimeTime exports separate functional, scan-shift, and scan-capture SDCs; PR links them into MCMM, STA, and ECO.
+- **12 timing scenarios:** three modes across four SS/FF PVT and parasitic combinations. PnR retains an additional TT power scenario, for 13 scenarios in total.
+- **Joint PrimeTime ECO:** DMSA solves setup/hold across the scenarios and exports `eco.tcl`; Fusion Compiler applies the changes, legalizes placement, and performs ECO routing.
+- **DFT timing replay:** scan insertion, ATPG, STIL-to-Verilog conversion, and post-layout VCS replay with SDF. The recorded replay completed **205 patterns with zero mismatches** and timing checks enabled.
+- **Physical verification and IR:** GDS merge, dummy fill, Calibre DRC/LVS/antenna, Formality, and four-corner RedHawk static/dynamic IR using gate-level FSDB activity.
+- **Engineering controls:** configurable rectangular/L-shaped floorplans, IO, Vt, CTS, DFT, ECO, and activity settings; input fingerprints, stage checks, and **59 passing regression tests**.
 
-The record also presents the schematic and layout of a **14-bit, 10 MS/s TI SAR ADC** implemented with `smic18mmrf`; the design completed post-layout simulation and the Cadence signoff flow.
+### GDS Layout
 
-[View the latest complete RTL2GDS flow record online](docs/RTL2GDS.md) · [Download the initial DOCX archive](docs/RTL2GDS.docx)
+![SPI postfill GDS in Calibre DESIGNrev](docs/images/rtl2gds/gds_postfill_2026-09-05.png)
+
+### 12-Scenario PrimeTime GUI
+
+![PrimeTime path collections for 12 timing scenarios](docs/images/rtl2gds/pt_dmsa_12_scenarios_2026-09-05.png)
+
+The 12 displayed collections show `NVP=0`, `WNS=0.000`, and `TNS=0.000`. The project also records successful PnR formal equivalence, a Calibre LVS `CORRECT` result, and four-corner IR analysis.
+
+[Complete workflow and commands](docs/RTL2GDS.md) · [Stage screenshot gallery](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [Initial DOCX archive](docs/RTL2GDS.docx)
+
+The VM also includes the schematic, layout, and post-layout simulation example of a **14-bit, 10 MS/s TI SAR ADC** using **SMIC 0.18µm RF**, demonstrating analog and mixed-signal design alongside the N28 digital flow.
 
 ## Verify The Environment
 
