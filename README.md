@@ -9,6 +9,12 @@
 
 > This repository documents a preconfigured VMware environment for digital, analog, and mixed-signal IC design. See [README_EN.md](README_EN.md) for the English guide.
 
+## 功能削减版脚本与使用声明
+
+仓库提供 [rtl2gds_small](rtl2gds_small/README.md) 功能削减版脚本，包含 `be_env` 和 `pr_env`。该目录不代表下文完整虚拟机环境中展示的全部流程与能力，也不包含测试设计、运行产物、EDA 软件或 PDK。
+
+**整个虚拟机环境及脚本仅供学习使用，禁止商用。** 详细限制与第三方许可边界见 [使用声明](NOTICE.md)。
+
 ## Download
 
 | 下载源 | 链接 | 提取码 |

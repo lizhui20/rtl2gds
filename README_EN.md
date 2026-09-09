@@ -2,6 +2,12 @@
 
 A preconfigured Red Hat Enterprise Linux 8.10 VMware environment for digital, analog, and mixed-signal IC design. The repository provides the image download location, import instructions, environment inventory tooling, troubleshooting notes, and a record of the RTL2GDS flow implemented in the VM.
 
+## Reduced-Function Scripts and Usage Notice
+
+The repository includes [rtl2gds_small](rtl2gds_small/README.md), a reduced-function script package containing `be_env` and `pr_env`. It does not include all capabilities demonstrated in the full VM environment below, test designs, generated outputs, EDA software, or PDKs.
+
+**The entire virtual machine environment and scripts are for learning purposes only. Commercial use is prohibited.** See the [usage notice](NOTICE.md) for restrictions and third-party licensing boundaries.
+
 ## Download
 
 Download from [Baidu Netdisk](https://pan.baidu.com/s/1wqB7OsjWHtzFlZPJBeHAaQ?pwd=ekdi) with extraction code `ekdi`.

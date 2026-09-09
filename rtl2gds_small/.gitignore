@@ -1,0 +1,13 @@
+/.validation/
+/be_env/*
+!/be_env/Makefile
+!/be_env/scripts/
+/pr_env/*
+!/pr_env/Makefile
+!/pr_env/scripts/
+/.agents/
+/.codex/
+__pycache__/
+*.pyc
+*.swp
+*.swo

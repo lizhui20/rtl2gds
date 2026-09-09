@@ -1,0 +1,42 @@
+conducting_layers
+M1 M1
+M2 M2
+M3 M3
+M4 M4
+M5 M5
+M6 M6
+M7 M7
+M8 M8
+M9 M9
+AP AP
+
+via_layers
+CO n_odCont
+VIA1 VIA1
+VIA2 VIA2
+VIA3 VIA3
+VIA4 VIA4
+VIA5 VIA5
+VIA6 VIA6
+VIA7 VIA7
+VIA8 VIA8
+RV RV
+
+ignore_cap_layers
+
+remove_layers
+ctm_9
+cbm_9
+ctm_8
+cbm_8
+p3
+crown
+p3Cont
+n_blc
+p_blc
+ctm_via8
+cbm_via8
+ctm_via7
+cbm_via7
+
+ignore_layers
