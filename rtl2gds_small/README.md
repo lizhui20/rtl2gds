@@ -1,6 +1,6 @@
 `rtl2gds_small` 是 RTL2GDS 的功能削减版，包含 `be_env` 和 `pr_env`，不代表完整虚拟机环境中展示的全部流程与能力。
 
-虚拟机环境及脚本仅供学习使用，禁止商用。使用声明见 [NOTICE.md](NOTICE.md)；EDA 软件及 PDK 等第三方内容仍受各自许可约束。
+虚拟机环境及脚本仅供学习使用，禁止商用。完整许可见 [LICENSE](LICENSE)，使用声明见 [NOTICE.md](NOTICE.md)；EDA 软件及 PDK 等第三方内容仍受各自许可约束。
 
 环境路径通过以下变量配置：
 

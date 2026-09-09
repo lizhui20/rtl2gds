@@ -6,7 +6,7 @@ A preconfigured Red Hat Enterprise Linux 8.10 VMware environment for digital, an
 
 The repository includes [rtl2gds_small](rtl2gds_small/README.md), a reduced-function script package containing `be_env` and `pr_env`. It does not include all capabilities demonstrated in the full VM environment below, test designs, generated outputs, EDA software, or PDKs.
 
-**The entire virtual machine environment and scripts are for learning purposes only. Commercial use is prohibited.** See the [usage notice](NOTICE.md) for restrictions and third-party licensing boundaries.
+**The entire virtual machine environment and scripts are for learning purposes only. Commercial use is prohibited.** Project-owned scripts, configuration, and documentation that the licensors have authority to license are subject to [LICENSE](LICENSE); see [NOTICE.md](NOTICE.md) for a summary. Third-party materials retain their own licenses. The Chinese license text is authoritative.
 
 ## Download
 

@@ -6,6 +6,8 @@
 
 EDA 软件、操作系统、PDK、工艺库及其他第三方内容的权利归各自权利人所有，使用及再分发须遵守其原有许可。本声明不授予任何第三方软件或数据的使用、复制或再分发权利。
 
+本项目自有且许可人有权许可的脚本、配置和文档适用 [LICENSE](LICENSE)。本声明为摘要，完整许可范围及条件以 LICENSE 为准。
+
 脚本按现状提供，不保证适用于生产或流片。复制或转发本项目自有脚本时，应保留本声明。
 
 `rtl2gds_small` is a reduced-function version of RTL2GDS. It does not include all capabilities demonstrated in the full environment.
@@ -13,5 +15,7 @@ EDA 软件、操作系统、PDK、工艺库及其他第三方内容的权利归�
 The virtual machine environment and scripts provided by this project are for learning purposes only. Commercial use is prohibited, including commercial project development, production delivery, paid services, and sale or rental of the environment or scripts.
 
 Third-party software and data, including EDA tools, the operating system, PDKs, and technology libraries, remain subject to their respective licenses. This notice grants no rights to use, copy, or redistribute third-party materials.
+
+Project-owned scripts, configuration, and documentation that the licensors have authority to license are subject to [LICENSE](LICENSE). This notice is a summary; LICENSE defines the full scope and conditions. The Chinese license text is authoritative.
 
 The scripts are provided as is, without assurance of suitability for production or tape-out. Retain this notice when copying or sharing project-owned scripts.
