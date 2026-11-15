@@ -44,9 +44,11 @@
 
 当前展示项目为 **`io_port` + TSMC 28HPC+（N28）真实 IO pad**：同步串行接口控制 GPIO 和 4 KiB 寄存器缓存，完成综合、DFT、布局布线及填充后 GDS 导出。使用 7-track 标准单元、9 层金属 4X2Y2R，并将 GPIO 电路、bond pad 和 core 集成到同一版图。
 
-### 最终导出版图（2026-11-14）
+### 最终签核 GDS 完整版图（2026-11-14）
 
-![io_port 最终签核 GDS 完整层视图，含 core、IO 环及 dummy fill](docs/images/rtl2gds/io_port_postfill_overview_2026-11-14.png)
+![io_port 最终签核 GDS 完整层视图，含 core、IO 环及 dummy fill](docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)
+
+[打开 3200×3200 完整原图](docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)。全图覆盖整个 die、四边 IO pad 和四个角，四周留白。
 
 Calibre DESIGNrev 直接从签核输入 `results/signoff/io_port.pnr.dummy.gds` 导出的完整层视图（含 dummy fill），顶层为 `merge_io_port`。die 为 **838×838 µm**，包含 **25 个信号 IO、14 个电源/地 IO、39 个 bond pad**，以及 4 个 corner、128 个 IO filler。布线细节与独立焊盘视图见[项目记录](docs/RTL2GDS.md)。
 

@@ -2,9 +2,11 @@
 
 当前项目为 **`io_port` + TSMC 28HPC+（N28）**，包含同步串行接口、GPIO、4 KiB 寄存器缓存、真实 IO 环和 bond pad。本文记录 2026-11-14 的最终导出版图及验证结果，替换原 SMIC18 案例展示。
 
-## 最终版图
+## 最终签核 GDS 完整版图
 
-![io_port 最终签核 GDS 完整层视图，含 dummy fill](images/rtl2gds/io_port_postfill_overview_2026-11-14.png)
+![io_port 最终签核 GDS 完整层视图，含 dummy fill](images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)
+
+[打开 3200×3200 完整原图](images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)。视窗覆盖完整 838×838 µm die，四边各保留 41.9 µm 留白，所有 IO pad 和四个角均位于画面内。
 
 上图由 **Calibre DESIGNrev** 从签核输入 `results/signoff/io_port.pnr.dummy.gds` 原生导出，显示全部图层，包括器件、互连、IO 环、bond pad 和 dummy fill。顶层为 `merge_io_port`，其 SHA-256 与最终 postfill fullchip DRC 输入一致。
 
@@ -24,19 +26,15 @@
 
 ### 辅助布线视图（仅 M1–M9）
 
-![同一签核 GDS 仅显示 M1–M9 布线层的辅助视图](images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
+![同一签核 GDS 仅显示 M1–M9 布线层的辅助视图](images/rtl2gds/io_port_full_routing_3200_2026-11-14.png)
 
 该辅助图仅显示 M1–M9 drawing layers，隐藏 dummy fill 等其他图层，便于查看布线结构；首页和本页主图使用上方的完整层视图。
 
 ### IO 与 bond pad
 
-![io_port 最终 GDS 的焊盘与开口层视图](images/rtl2gds/io_port_postfill_pads_2026-11-14.png)
+![io_port 最终 GDS 的焊盘与开口层视图](images/rtl2gds/io_port_full_pads_3200_2026-11-14.png)
 
 该视图选择 AP、CB、CB2W 和 M7 标签层，显示 39 个 bond pad 的分布。GPIO 电路采用 7lm 视图，与 9M 4X2Y2R bond pad 配套；IO 环距 die 边缘 30 µm，自动 core margin 至少 150 µm。
-
-### 角部布线
-
-![io_port 最终 postfill GDS 的角部布线细节](images/rtl2gds/io_port_postfill_corner_routing_2026-11-14.png)
 
 最终实现还接入四个外围衬底接地点，Calibre LVS/ERC 中原来的 `floating.psub` 结果已消除。
 
@@ -129,7 +127,7 @@ ERC 剩余项为 `mnpg=242`、`floating.nxwell_float=2`、`npvss49=2`，定位�
 
 ## 图像与结果来源
 
-发布的 PNG 为 Calibre DESIGNrev 原生导出图，直接复制自完整工程的 `pr_env/io_port/reports/signoff/calibredrv/postfill/`。它们展示实际 GDS 几何；布线层图、完整层图和焊盘图通过文件名区分。
+发布的 PNG 为 Calibre DESIGNrev 原生导出图，本次重新读取最终签核 GDS，按完整 die 加四周留白导出到 `pr_env/io_port/reports/validation/github_full_layout/`。三张图均为 3200×3200，视窗为 `(-41.9, -41.9)–(879.9, 879.9)` µm；主图显示全部图层，辅助布线图和焊盘图也保留整个 die 范围。
 
 最终 postfill GDS 的 SHA-256：
 

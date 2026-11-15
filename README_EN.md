@@ -30,9 +30,11 @@ The bundled guide discloses a default password and fixed MAC. The maintainer sho
 
 The current example is **`io_port` with real TSMC 28HPC+ (N28) IO pads**: a synchronous serial interface controls GPIO and a 4 KiB register buffer implemented with standard cells. The flow covers synthesis, DFT, place and route, and postfill GDS export using 7-track cells and a 9-metal 4X2Y2R stack.
 
-### Final Exported Layout (2026-11-14)
+### Complete Final Signoff GDS Layout (2026-11-14)
 
-![io_port final signoff GDS, all-layer view including core, IO ring and dummy fill](docs/images/rtl2gds/io_port_postfill_overview_2026-11-14.png)
+![io_port final signoff GDS, all-layer view including core, IO ring and dummy fill](docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)
+
+[Open the full 3200×3200 image](docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png). The view includes the entire die, all four sides of the IO ring and all four corners, with a margin on every side.
 
 This native Calibre DESIGNrev all-layer view, including dummy fill, comes from the signoff input `results/signoff/io_port.pnr.dummy.gds`, with top cell `merge_io_port`. The **838×838 µm** die contains **25 signal IOs, 14 supply/ground IOs and 39 bond pads**, plus four corners and 128 IO fillers. The implementation pairs 7lm GPIO circuitry with 9M 4X2Y2R bond pads at a 50 µm IO pitch. The final scan chain contains 32,934 bits.
 

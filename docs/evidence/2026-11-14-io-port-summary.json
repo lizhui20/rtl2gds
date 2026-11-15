@@ -14,25 +14,32 @@
   "scan_chains": 1,
   "scan_bits": 32934,
   "images": {
-    "routing": {
-      "path": "docs/images/rtl2gds/io_port_postfill_routing_2026-11-14.png",
-      "source": "pr_env/io_port/reports/signoff/calibredrv/postfill/routing.png",
-      "sha256": "6990237dd1fd5fbcc259f78843efecee4b092baebb27f6d21cb64a6e1bed07c0"
+    "full_signoff": {
+      "path": "docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png",
+      "source": "pr_env/io_port/reports/validation/github_full_layout/full_signoff.png",
+      "sha256": "b8a8755f0ffbb50d9a584ec6572293251fdcab2038081647ff68a18ee05d76f0",
+      "dimensions": [
+        3200,
+        3200
+      ]
     },
-    "overview": {
-      "path": "docs/images/rtl2gds/io_port_postfill_overview_2026-11-14.png",
-      "source": "pr_env/io_port/reports/signoff/calibredrv/postfill/overview.png",
-      "sha256": "d5d5c90bf9d718add56a5e7d7315b2964053a86fdf5b7230df0848e5ab21b62d"
+    "full_routing": {
+      "path": "docs/images/rtl2gds/io_port_full_routing_3200_2026-11-14.png",
+      "source": "pr_env/io_port/reports/validation/github_full_layout/full_routing.png",
+      "sha256": "f62d186c8b67d030156fd30604747d32944679b6d8eb91da8ac777863db1ecf5",
+      "dimensions": [
+        3200,
+        3200
+      ]
     },
-    "pads": {
-      "path": "docs/images/rtl2gds/io_port_postfill_pads_2026-11-14.png",
-      "source": "pr_env/io_port/reports/signoff/calibredrv/postfill/pads.png",
-      "sha256": "280310342c89fd1c637f95b45ee009c2057c4fa3254506b392f2000a59de5f9d"
-    },
-    "corner_routing": {
-      "path": "docs/images/rtl2gds/io_port_postfill_corner_routing_2026-11-14.png",
-      "source": "pr_env/io_port/reports/signoff/calibredrv/postfill/corner_routing.png",
-      "sha256": "85010961320363912290a7d28eb8e079d03d1089c43cd685adf721381ff9ab75"
+    "full_pads": {
+      "path": "docs/images/rtl2gds/io_port_full_pads_3200_2026-11-14.png",
+      "source": "pr_env/io_port/reports/validation/github_full_layout/full_pads.png",
+      "sha256": "e8fefc43c4dcce69c397aae851508462398c6b3d331309bc4d1d6fa5a5b966c6",
+      "dimensions": [
+        3200,
+        3200
+      ]
     }
   },
   "source_report": "pr_env/io_port/reports/signoff/signoff_review.json",
@@ -144,5 +151,34 @@
     "date": "2026-11-14",
     "source": "Maintainer instruction for this publication",
     "drc_erc": "Remaining items confirmed waivable by maintainer; native tool counts remain unchanged."
+  },
+  "image_export": {
+    "tool": "Calibre DESIGNrev exportView",
+    "top": "merge_io_port",
+    "die_um": [
+      0,
+      0,
+      838,
+      838
+    ],
+    "gds_bbox_um": [
+      0.605,
+      0.605,
+      837.395,
+      837.395
+    ],
+    "view_clip_um": [
+      -41.9,
+      -41.9,
+      879.9,
+      879.9
+    ],
+    "margin_each_side_um": 41.9,
+    "resolution_px": [
+      3200,
+      3200
+    ],
+    "hierarchy_depth": 99,
+    "primary_view": "all GDS layers, including dummy fill"
   }
 }
