@@ -116,22 +116,154 @@
       "unwaived_quality_checks": 442
     },
     "redhawk_static_dynamic": {
-      "status": "BLOCKED",
+      "status": "FAIL",
       "license_status": "PASS",
-      "reason": "Four-corner rerun reached design import; IO PG-arc definitions and complete power-library integration are required",
-      "static_completed": false,
-      "dynamic_completed": false,
+      "library_integration_status": "PASS",
+      "assessment_scope": "Mixed-model on-die IR assessment; not complete power-integrity signoff",
+      "static_completed": true,
+      "dynamic_completed": true,
       "io_sram_liberty_available": true,
-      "io_sram_liberty_loaded_by_current_flow": false,
-      "sram_exact_power_corners_available": [
+      "io_sram_liberty_loaded_by_current_flow": true,
+      "analyzed_corners": [
         "tt0p9v85c",
         "ffg0p99v125c"
       ],
+      "interconnect_corner": "rcworst_T",
       "sram_exact_power_corners_missing": [
         "tt0p8v85c",
         "ffg0p88v125c"
       ],
-      "diagnostic_only": "Isolated FF probe recognizes one SRAM and 39 IO instances using foundry Liberty; not a signoff result. Standard-cell structural models remain incomplete and POC supply modeling is unresolved."
+      "ss_low_voltage_hot_views": {
+        "corner": "ssg0p81v125c",
+        "io_voltage_v": 1.62,
+        "standard_cell_ccs_db_available": true,
+        "sram_io_liberty_available": true,
+        "standard_cell_apl_available": false,
+        "included_in_this_run": false
+      },
+      "ff_high_voltage_cold_views": {
+        "corner": "ffg0p99vm40c",
+        "io_voltage_v": 1.98,
+        "standard_cell_ccs_db_available": true,
+        "sram_io_liberty_available": true,
+        "standard_cell_apl_available": false,
+        "included_in_this_run": false
+      },
+      "power_models": {
+        "standard_cells": "Foundry RVT/HVT/LVT APL with structural Liberty",
+        "io_sram": "Exact-PVT foundry Liberty energy/leakage with estimated dynamic profiles"
+      },
+      "supply_pad_masters_extracted_from_gds": 7,
+      "ideal_supply_pads": 14,
+      "ideal_supply_landing_points": 22,
+      "dynamic_window_us": [
+        10.9,
+        21.84
+      ],
+      "dynamic_time_step_ps": 10,
+      "activity_waveform_timing_scenario": "ff_hot_highv_hold",
+      "activity_waveform_shared_between_power_corners": true,
+      "limitations": [
+        "No package, bond-wire or board impedance",
+        "IO external loads and input slews are incomplete; native Liberty extrapolation warnings remain",
+        "Standard-cell structural Liberty lacks complete functional/timing/pin-capacitance data",
+        "Both power corners reuse one gate-level FSDB from the FF hot high-voltage SDF scenario",
+        "SRAM/IO dynamic profiles and SRAM effective decap are estimated, not vendor-qualified APL",
+        "Two originally requested corners lack exact SRAM power views",
+        "EM qualification is not included"
+      ],
+      "results": {
+        "static": {
+          "tt0p9v85c": {
+            "solver_completed": true,
+            "numeric_status": "PASS",
+            "powered_instances": 855,
+            "disconnected_powered_instances": 0,
+            "nominal_voltage_v": 0.9,
+            "worst_static_drop_v": 0.0057,
+            "worst_static_drop_percent": 0.633333,
+            "worst_static_drop_node": "VDD ( 431.020, 364.800) M1",
+            "max_static_drop_percent": 5.0,
+            "worst_ground_bounce_v": 0.0126,
+            "worst_ground_bounce_percent": 1.4,
+            "worst_ground_bounce_node": "VSS ( 366.742, 308.840) M4",
+            "max_ground_bounce_percent": 5.0,
+            "domain_VDD_nominal_v": 0.9,
+            "domain_VDD_drop_v": 0.005700000000000038,
+            "domain_VDD_drop_percent": 0.633333,
+            "domain_VDDIO_nominal_v": 1.8,
+            "domain_VDDIO_drop_v": 0.00019999999999997797,
+            "domain_VDDIO_drop_percent": 0.011111
+          },
+          "ffg0p99v125c": {
+            "solver_completed": true,
+            "numeric_status": "FAIL",
+            "powered_instances": 855,
+            "disconnected_powered_instances": 0,
+            "nominal_voltage_v": 0.99,
+            "worst_static_drop_v": 0.0375,
+            "worst_static_drop_percent": 3.787879,
+            "worst_static_drop_node": "VDD ( 310.060, 443.200) M1",
+            "max_static_drop_percent": 5.0,
+            "worst_ground_bounce_v": 0.0855,
+            "worst_ground_bounce_percent": 8.636364,
+            "worst_ground_bounce_node": "VSS ( 354.605, 308.840) M4",
+            "max_ground_bounce_percent": 5.0,
+            "domain_VDD_nominal_v": 0.99,
+            "domain_VDD_drop_v": 0.03749999999999998,
+            "domain_VDD_drop_percent": 3.787879,
+            "domain_VDDIO_nominal_v": 1.98,
+            "domain_VDDIO_drop_v": 0.00019999999999997797,
+            "domain_VDDIO_drop_percent": 0.010101
+          }
+        },
+        "dynamic": {
+          "tt0p9v85c": {
+            "solver_completed": true,
+            "numeric_status": "FAIL",
+            "powered_instances": 855,
+            "disconnected_powered_instances": 0,
+            "nominal_voltage_v": 0.9,
+            "worst_dynamic_drop_v": 0.1748,
+            "worst_dynamic_drop_percent": 19.422222,
+            "worst_dynamic_drop_node": "VDD ( 378.000, 411.620) M4",
+            "max_dynamic_drop_percent": 10.0,
+            "worst_ground_bounce_v": 0.2692,
+            "worst_ground_bounce_percent": 29.911111,
+            "worst_ground_bounce_node": "VSS ( 324.605, 309.740) M4",
+            "max_ground_bounce_percent": 5.0,
+            "domain_VDD_nominal_v": 0.9,
+            "domain_VDD_drop_v": 0.17480000000000007,
+            "domain_VDD_drop_percent": 19.422222,
+            "activity_status": "PASS",
+            "net_coverage_percent": 100.0,
+            "input_coverage_percent": 100.0,
+            "idle_net_percent": 13.011542
+          },
+          "ffg0p99v125c": {
+            "solver_completed": true,
+            "numeric_status": "FAIL",
+            "powered_instances": 855,
+            "disconnected_powered_instances": 0,
+            "nominal_voltage_v": 0.99,
+            "worst_dynamic_drop_v": 0.2235,
+            "worst_dynamic_drop_percent": 22.575758,
+            "worst_dynamic_drop_node": "VDD ( 366.743, 412.520) M4",
+            "max_dynamic_drop_percent": 10.0,
+            "worst_ground_bounce_v": 0.3482,
+            "worst_ground_bounce_percent": 35.171717,
+            "worst_ground_bounce_node": "VSS ( 324.605, 309.740) M4",
+            "max_ground_bounce_percent": 5.0,
+            "domain_VDD_nominal_v": 0.99,
+            "domain_VDD_drop_v": 0.22350000000000003,
+            "domain_VDD_drop_percent": 22.575758,
+            "activity_status": "PASS",
+            "net_coverage_percent": 100.0,
+            "input_coverage_percent": 100.0,
+            "idle_net_percent": 13.011542
+          }
+        }
+      }
     }
   },
   "overall_status": "NOT_SIGNOFF_CLEAN"
