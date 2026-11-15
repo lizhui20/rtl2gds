@@ -28,9 +28,9 @@
 
 ## 最新 GDS 视图：io_port / TSMC N28（2026-11-14）
 
-![io_port 最终填充后 GDS 的 M1–M9 布线视图](images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
+![io_port 最终签核 GDS 完整层视图，含 dummy fill](images/rtl2gds/io_port_postfill_overview_2026-11-14.png)
 
-838×838 µm，25 个信号 IO、14 个电源/地 IO、39 个 bond pad。图像由 Calibre DESIGNrev 从最终 postfill GDS 原生导出。
+838×838 µm，25 个信号 IO、14 个电源/地 IO、39 个 bond pad。图像由 Calibre DESIGNrev 从签核输入 `results/signoff/io_port.pnr.dummy.gds` 原生导出，显示全部图层及 dummy fill。
 
 ## IO pad / bond pad 视图
 

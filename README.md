@@ -46,9 +46,9 @@
 
 ### 最终导出版图（2026-11-14）
 
-![io_port 最终填充后 GDS 的 M1–M9 布线视图，含 core 与 IO 环](docs/images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
+![io_port 最终签核 GDS 完整层视图，含 core、IO 环及 dummy fill](docs/images/rtl2gds/io_port_postfill_overview_2026-11-14.png)
 
-Calibre DESIGNrev 直接从 `io_port.pnr.dummy.gds` 导出的真实几何视图，顶层为 `merge_io_port`。die 为 **838×838 µm**，包含 **25 个信号 IO、14 个电源/地 IO、39 个 bond pad**，以及 4 个 corner、128 个 IO filler。完整层视图与独立焊盘视图见[项目记录](docs/RTL2GDS.md)。
+Calibre DESIGNrev 直接从签核输入 `results/signoff/io_port.pnr.dummy.gds` 导出的完整层视图（含 dummy fill），顶层为 `merge_io_port`。die 为 **838×838 µm**，包含 **25 个信号 IO、14 个电源/地 IO、39 个 bond pad**，以及 4 个 corner、128 个 IO filler。布线细节与独立焊盘视图见[项目记录](docs/RTL2GDS.md)。
 
 ### 项目亮点与当前结果
 

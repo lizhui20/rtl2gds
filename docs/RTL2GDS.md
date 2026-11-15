@@ -4,9 +4,9 @@
 
 ## 最终版图
 
-![io_port 最终 postfill GDS 的 M1–M9 布线视图](images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
+![io_port 最终签核 GDS 完整层视图，含 dummy fill](images/rtl2gds/io_port_postfill_overview_2026-11-14.png)
 
-上图由 **Calibre DESIGNrev** 从最终 `io_port.pnr.dummy.gds` 原生导出，选取 M1–M9 布线层，展示 core、电源网络和 IO 环。它与下面的完整层图、焊盘图来自同一份 GDS，顶层为 `merge_io_port`。
+上图由 **Calibre DESIGNrev** 从签核输入 `results/signoff/io_port.pnr.dummy.gds` 原生导出，显示全部图层，包括器件、互连、IO 环、bond pad 和 dummy fill。顶层为 `merge_io_port`，其 SHA-256 与最终 postfill fullchip DRC 输入一致。
 
 | 项目 | 最终实现 |
 | --- | --- |
@@ -22,11 +22,11 @@
 | Mapped / postfill GDS cells | 400 / 445 |
 | 未解析 GDS 引用 | 两版均为 0 |
 
-### 完整层视图
+### 辅助布线视图（仅 M1–M9）
 
-![io_port 最终 postfill GDS 的完整层视图](images/rtl2gds/io_port_postfill_overview_2026-11-14.png)
+![同一签核 GDS 仅显示 M1–M9 布线层的辅助视图](images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
 
-完整层图包含器件、互连及 dummy fill；高密度图形叠加后，独立的布线与焊盘视图更便于检查结构。
+该辅助图仅显示 M1–M9 drawing layers，隐藏 dummy fill 等其他图层，便于查看布线结构；首页和本页主图使用上方的完整层视图。
 
 ### IO 与 bond pad
 
