@@ -38,6 +38,10 @@ SRAM 由 `model.f` 指定，脚本自动接入对应的逻辑和物理库视图�
 
 ![io_port 布线全图](images/rtl2gds/io_port_sram_routing.png)
 
+供电网新增 14 条 M8 VDD 横向线和 14 条 M9 VSS 纵向线，线宽 4 µm、节距 10 µm。pad 接入段使用 8 µm 宽线，并通过分布式过孔接入核心区原有电网。
+
+完整工程的供电参数集中在 `pr_env/scripts/pdk/tsmc28hpcplus.tcl`：`IO_UPPER_GRID_WIDTH=4.0`、`IO_UPPER_GRID_PITCH=10.0`、`IO_PAD_ACCESS_WIDTH=8.0`；局部指状线和原有馈线分别由 `IO_VSS_FINGER_WIDTH=1.6`、`IO_CORE_FEED_WIDTH=0.4` 控制，单位均为 µm。位置和条数由脚本生成，线宽仍需结合新项目的 IR/EM 检查选择。
+
 ### 焊盘与开口
 
 ![io_port 焊盘与开口](images/rtl2gds/io_port_sram_pads.png)
@@ -107,16 +111,58 @@ make -C pr_env physical_signoff_all b=io_port
 | Antenna | 通过 |
 | 功能 SDF 回标 | 四个工艺角全部通过，开启时序检查 |
 | 布线后扫描回放 | 每角 100 patterns，四角全部通过，开启时序检查 |
-| PrimeTime | 12 场景：setup 0、hold 4、最大转换时间 0、最大电容 3 项违例；约束与检查覆盖尚未全部通过 |
-| RedHawk 静态 IR | 已接入 IO/SRAM；TT 角通过数值检查，FF 角最大地弹 85.5 mV（8.64%），超过 5% 阈值 |
-| RedHawk 动态 IR | 两角均完成，但数值检查均未通过；最坏 FF 角的 VDD 压降为 22.58%，地弹为 35.17% |
+| PrimeTime | 12 场景：setup 0、hold 2、最大转换时间 0、最大电容 3 项违例；约束与检查覆盖尚未全部通过 |
+| RedHawk 静态 IR | TT、FF 均通过；FF 的 VDD 压降 4.9 mV、VSS 地弹 2.9 mV |
+| RedHawk 动态 IR | TT、FF 均通过；核心域最坏 VDD 压降 8.46%、VSS 地弹 3.91% |
 | GDS 层级 | 无未解析引用 |
 
 RedHawk 现在使用标准单元 APL 和 IO/SRAM 的原厂 Liberty。电源 pad 的内部导通结构从现有 GDS 抽取，855 个有功耗的实例均已接入电网。当前分析 0.9 V / 85°C 的 TT 角和 0.99 V / 125°C 的 FF 角，互连均使用 `RCworst_T`。另两个原定分析角（0.8 V、0.88 V）缺少匹配的 SRAM 功耗视图；SS 低压高温的时序库已有，但缺少标准单元 SS 角 APL。
 
-动态分析覆盖 10.90–21.84 µs，两个角的信号网和输入活动覆盖率均为 100%。动态 VDD 压降限值为 10%，地弹限值为 5%；求解完成并不等于这些检查通过。
+动态分析覆盖 10.90–21.84 µs，两个角的信号网和输入活动覆盖率均为 100%。当前联合门限为：同一供电域的 VDD 压降与 VSS 地弹之和，静态不超过额定电压的 5%，动态不超过 15%。核心域与 IO 域分别计算，两角均通过。采用各自最坏值相加作为保守上界，不表示两个峰值同时发生。
 
-这仍是混合模型的片上 IR 评估：两角复用一份 FF 回标波形，IO/SRAM 动态电流及 SRAM 有效电容有估算成分，标准单元结构库、IO 外部负载与转换时间也未完整建模，且不包含封装和 bond wire 阻抗。现有结果指出了 pad 到 core 的供电薄弱处；后续需要加强这部分电网，并补齐瞬态模型后复核。
+供电网加宽后的核心域结果如下，单位为 mV。FF 动态 VDD 压降由 223.5 降到 83.8，VSS 地弹由 348.2 降到 38.7。
+
+| 工艺角 | 静态 VDD 压降 | 静态 VSS 地弹 | 动态 VDD 压降 | 动态 VSS 地弹 |
+| --- | ---: | ---: | ---: | ---: |
+| TT，0.9 V，85°C | 0.90 | 0.51 | 67.14 | 29.53 |
+| FF，0.99 V，125°C | 4.90 | 2.90 | 83.80 | 38.68 |
+
+核心域联合损失：TT 静态 **0.157%**、动态 **10.74%**；FF 静态 **0.788%**、动态 **12.37%**。这些结果也通过了之前的独立压降 / 地弹门限。
+
+### RedHawk 压降图
+
+下图直接从本次完成的 RedHawk 数据库导出，保留完整供电网和原生色标。动态图显示整个 10.90–21.84 µs 窗口的节点最坏值，各节点的峰值不一定同时发生。图例的 `IR on Viewed Nets` 是当前所选电源网的最大值；`Max wire IR` 是全设计最大值。色标单位为 mV、范围由工具自动设置，跨图比较以数值为准。红色表示色标的高值区，并不直接代表超过联合门限。
+
+<details>
+<summary>动态 IR：TT / FF，VDD / VSS 全图</summary>
+
+| 工艺角 | VDD 压降 | VSS 地弹 |
+| --- | --- | --- |
+| TT，0.9 V，85°C | ![TT，0.9 V，85°C 动态 IR VDD](images/rtl2gds/io_port_redhawk_dynamic_tt0p9v85c_VDD_full.gif) | ![TT，0.9 V，85°C 动态 IR VSS](images/rtl2gds/io_port_redhawk_dynamic_tt0p9v85c_VSS_full.gif) |
+| FF，0.99 V，125°C | ![FF，0.99 V，125°C 动态 IR VDD](images/rtl2gds/io_port_redhawk_dynamic_ffg0p99v125c_VDD_full.gif) | ![FF，0.99 V，125°C 动态 IR VSS](images/rtl2gds/io_port_redhawk_dynamic_ffg0p99v125c_VSS_full.gif) |
+
+</details>
+
+<details>
+<summary>静态 IR：TT / FF，VDD / VSS 全图</summary>
+
+| 工艺角 | VDD 压降 | VSS 地弹 |
+| --- | --- | --- |
+| TT，0.9 V，85°C | ![TT，0.9 V，85°C 静态 IR VDD](images/rtl2gds/io_port_redhawk_static_tt0p9v85c_VDD_full.gif) | ![TT，0.9 V，85°C 静态 IR VSS](images/rtl2gds/io_port_redhawk_static_tt0p9v85c_VSS_full.gif) |
+| FF，0.99 V，125°C | ![FF，0.99 V，125°C 静态 IR VDD](images/rtl2gds/io_port_redhawk_static_ffg0p99v125c_VDD_full.gif) | ![FF，0.99 V，125°C 静态 IR VSS](images/rtl2gds/io_port_redhawk_static_ffg0p99v125c_VSS_full.gif) |
+
+</details>
+
+<details>
+<summary>FF 动态核心区放大图</summary>
+
+| VDD 压降 | VSS 地弹 |
+| --- | --- |
+| ![FF 动态 VDD 核心区](images/rtl2gds/io_port_redhawk_dynamic_ffg0p99v125c_VDD_core.gif) | ![FF 动态 VSS 核心区](images/rtl2gds/io_port_redhawk_dynamic_ffg0p99v125c_VSS_core.gif) |
+
+</details>
+
+这仍是混合模型的片上 IR 评估：两角复用一份 FF 回标波形，IO/SRAM 动态电流及 SRAM 有效电容有估算成分，标准单元结构库、IO 外部负载与转换时间也未完整建模，且不包含封装和 bond wire 阻抗。本版已加强 pad 到 core 的供电网；瞬态模型仍需补齐后复核。IO 库提供了 110°C 的直流载流表，但当前缺少 125°C 的金属、过孔 EM 限值及温度折算数据，因此未完成 EM 寿命签核。
 
 这版已完成面积优化和物理实现，但还不是全部 signoff 通过的状态。DRC/ERC 的项目 waiver 不包含时序违例；扫描回放通过也不代表 SRAM 阵列已有制造测试覆盖。当前未加入机械 seal-ring。
 

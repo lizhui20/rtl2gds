@@ -44,7 +44,7 @@
   "layout": {
     "file": "io_port.pnr.dummy.gds",
     "top": "merge_io_port",
-    "sha256": "bfb7394e69e0e86e740c7be7ee7c917b40f6fe115d9961fac1935cc1115d839e",
+    "sha256": "c092b76ac075872ff115043cbf7bca23e97d18072f833d54195eae6f8330233f",
     "unresolved_references": 0,
     "full_view_clip_um": [
       -37.5,
@@ -58,21 +58,21 @@
           3200,
           3200
         ],
-        "sha256": "922560e75ab59e83dc1b09545f3712c00fa373925b0923a915b7894f8cccf149"
+        "sha256": "0d50fc1e4f588600dcbe60072e999fb9245c5f0f3108d34706a49b849f72ffc7"
       },
       "io_port_sram_core.png": {
         "pixels": [
           2400,
           2400
         ],
-        "sha256": "7a9579326e9c6b5bdba1ecfe02d8635cf09a592b5a8f7e14ca5909d2096178c2"
+        "sha256": "fd490e9ecdfc5fcd9df5738468d9cadc9d278bfb6735195420dc865723d43847"
       },
       "io_port_sram_routing.png": {
         "pixels": [
           3200,
           3200
         ],
-        "sha256": "5fb37d371e8aa747a0822d4772d77d4400fa0141843d3933d176cbdb42a95534"
+        "sha256": "9d7f91eb2398e76ff6f3ac44ce88a56b8134c567367e52dd3761705b66e46298"
       },
       "io_port_sram_pads.png": {
         "pixels": [
@@ -109,17 +109,38 @@
       "status": "FAIL",
       "scenarios": 12,
       "setup_violating_paths": 0,
-      "hold_violating_paths": 4,
+      "hold_violating_paths": 2,
       "max_transition_violations": 0,
       "max_capacitance_violations": 3,
       "quality_status": "FAIL",
-      "unwaived_quality_checks": 442
+      "unwaived_quality_checks": 438
     },
     "redhawk_static_dynamic": {
-      "status": "FAIL",
+      "status": "PASS",
       "license_status": "PASS",
       "library_integration_status": "PASS",
       "assessment_scope": "Mixed-model on-die IR assessment; not complete power-integrity signoff",
+      "acceptance_policy": {
+        "metric": "combined_supply_loss_upper_bound",
+        "static_percent": 5.0,
+        "dynamic_percent": 15.0,
+        "domain_pairs": [
+          [
+            "VDD",
+            "VSS"
+          ],
+          [
+            "VDDIO",
+            "VSSIO"
+          ]
+        ]
+      },
+      "acceptance_policy_sha256": "f293dea57869f5832bca1ca54c2d8d3575078a5cea3233ffab82f57f2a89e93e",
+      "result_field_notes": {
+        "absolute_maxima": "Worst drop/bounce volts may belong to IO; use domain fields for core-only values",
+        "combined_loss": "Maximum per-pair sum of independent worst VDD drop and VSS magnitude, divided by that domain voltage; conservative upper bound, not a coincident waveform measurement",
+        "legacy_limits": "Retained for comparison only; combined supply-loss policy determines current numeric status"
+      },
       "static_completed": true,
       "dynamic_completed": true,
       "io_sram_liberty_available": true,
@@ -180,91 +201,409 @@
             "powered_instances": 855,
             "disconnected_powered_instances": 0,
             "nominal_voltage_v": 0.9,
-            "worst_static_drop_v": 0.0057,
-            "worst_static_drop_percent": 0.633333,
+            "worst_static_drop_v": 0.0009,
+            "worst_static_drop_percent": 0.1,
             "worst_static_drop_node": "VDD ( 431.020, 364.800) M1",
-            "max_static_drop_percent": 5.0,
-            "worst_ground_bounce_v": 0.0126,
-            "worst_ground_bounce_percent": 1.4,
-            "worst_ground_bounce_node": "VSS ( 366.742, 308.840) M4",
-            "max_ground_bounce_percent": 5.0,
+            "legacy_max_static_drop_percent": 5.0,
+            "worst_ground_bounce_v": 0.0005120455,
+            "worst_ground_bounce_percent": 0.056894,
+            "worst_ground_bounce_node": "VSS layer M1 ( 433.75 , 364.1 )",
+            "legacy_max_ground_bounce_percent": 5.0,
             "domain_VDD_nominal_v": 0.9,
-            "domain_VDD_drop_v": 0.005700000000000038,
-            "domain_VDD_drop_percent": 0.633333,
+            "domain_VDD_drop_v": 0.0009000000000000119,
+            "domain_VDD_drop_percent": 0.1,
             "domain_VDDIO_nominal_v": 1.8,
             "domain_VDDIO_drop_v": 0.00019999999999997797,
-            "domain_VDDIO_drop_percent": 0.011111
+            "domain_VDDIO_drop_percent": 0.011111,
+            "domain_VSS_nominal_v": 0.9,
+            "domain_VSS_bounce_v": 0.0005120455,
+            "domain_VSS_bounce_percent": 0.056894,
+            "domain_VSSIO_nominal_v": 1.8,
+            "domain_VSSIO_bounce_v": 0.0003078958,
+            "domain_VSSIO_bounce_percent": 0.017105,
+            "limiting_power_domain": "VDD",
+            "limiting_ground_domain": "VSS",
+            "gate_metric": "combined_supply_loss_upper_bound",
+            "max_combined_loss_percent": 5.0,
+            "worst_combined_loss_v": 0.0014120455,
+            "worst_combined_loss_percent": 0.156894,
+            "limiting_supply_pair": "VDD_VSS",
+            "combined_bound_method": "independent_max_drop_plus_max_ground_magnitude",
+            "combined_VDDIO_VSSIO_loss_v": 0.0005078958,
+            "combined_VDDIO_VSSIO_loss_percent": 0.028216,
+            "combined_VDD_VSS_loss_v": 0.0014120455,
+            "combined_VDD_VSS_loss_percent": 0.156894,
+            "gate_policy_sha256": "f293dea57869f5832bca1ca54c2d8d3575078a5cea3233ffab82f57f2a89e93e",
+            "database_readback": "PASS"
           },
           "ffg0p99v125c": {
             "solver_completed": true,
-            "numeric_status": "FAIL",
+            "numeric_status": "PASS",
             "powered_instances": 855,
             "disconnected_powered_instances": 0,
             "nominal_voltage_v": 0.99,
-            "worst_static_drop_v": 0.0375,
-            "worst_static_drop_percent": 3.787879,
+            "worst_static_drop_v": 0.0049,
+            "worst_static_drop_percent": 0.494949,
             "worst_static_drop_node": "VDD ( 310.060, 443.200) M1",
-            "max_static_drop_percent": 5.0,
-            "worst_ground_bounce_v": 0.0855,
-            "worst_ground_bounce_percent": 8.636364,
-            "worst_ground_bounce_node": "VSS ( 354.605, 308.840) M4",
-            "max_ground_bounce_percent": 5.0,
+            "legacy_max_static_drop_percent": 5.0,
+            "worst_ground_bounce_v": 0.0029,
+            "worst_ground_bounce_percent": 0.292929,
+            "worst_ground_bounce_node": "VSS ( 310.060, 442.500) M1",
+            "legacy_max_ground_bounce_percent": 5.0,
             "domain_VDD_nominal_v": 0.99,
-            "domain_VDD_drop_v": 0.03749999999999998,
-            "domain_VDD_drop_percent": 3.787879,
+            "domain_VDD_drop_v": 0.0049000000000000155,
+            "domain_VDD_drop_percent": 0.494949,
             "domain_VDDIO_nominal_v": 1.98,
-            "domain_VDDIO_drop_v": 0.00019999999999997797,
-            "domain_VDDIO_drop_percent": 0.010101
+            "domain_VDDIO_drop_v": 0.0002028942,
+            "domain_VDDIO_drop_percent": 0.010247,
+            "domain_VSS_nominal_v": 0.99,
+            "domain_VSS_bounce_v": 0.0029,
+            "domain_VSS_bounce_percent": 0.292929,
+            "domain_VSSIO_nominal_v": 1.98,
+            "domain_VSSIO_bounce_v": 0.0004104233,
+            "domain_VSSIO_bounce_percent": 0.020728,
+            "limiting_power_domain": "VDD",
+            "limiting_ground_domain": "VSS",
+            "gate_metric": "combined_supply_loss_upper_bound",
+            "max_combined_loss_percent": 5.0,
+            "worst_combined_loss_v": 0.0078,
+            "worst_combined_loss_percent": 0.787879,
+            "limiting_supply_pair": "VDD_VSS",
+            "combined_bound_method": "independent_max_drop_plus_max_ground_magnitude",
+            "combined_VDDIO_VSSIO_loss_v": 0.0006133175,
+            "combined_VDDIO_VSSIO_loss_percent": 0.030976,
+            "combined_VDD_VSS_loss_v": 0.0078,
+            "combined_VDD_VSS_loss_percent": 0.787879,
+            "gate_policy_sha256": "f293dea57869f5832bca1ca54c2d8d3575078a5cea3233ffab82f57f2a89e93e",
+            "database_readback": "PASS"
           }
         },
         "dynamic": {
           "tt0p9v85c": {
             "solver_completed": true,
-            "numeric_status": "FAIL",
+            "numeric_status": "PASS",
             "powered_instances": 855,
             "disconnected_powered_instances": 0,
             "nominal_voltage_v": 0.9,
-            "worst_dynamic_drop_v": 0.1748,
-            "worst_dynamic_drop_percent": 19.422222,
-            "worst_dynamic_drop_node": "VDD ( 378.000, 411.620) M4",
-            "max_dynamic_drop_percent": 10.0,
-            "worst_ground_bounce_v": 0.2692,
-            "worst_ground_bounce_percent": 29.911111,
-            "worst_ground_bounce_node": "VSS ( 324.605, 309.740) M4",
-            "max_ground_bounce_percent": 5.0,
+            "worst_dynamic_drop_v": 0.0692,
+            "worst_dynamic_drop_percent": 7.459753,
+            "worst_dynamic_drop_node": "VDDIO ( 67.870, 205.600) M3",
+            "legacy_max_dynamic_drop_percent": 10.0,
+            "worst_ground_bounce_v": 0.0407,
+            "worst_ground_bounce_percent": 3.281557,
+            "worst_ground_bounce_node": "VSSIO ( 427.800, 65.670) M3",
+            "legacy_max_ground_bounce_percent": 5.0,
             "domain_VDD_nominal_v": 0.9,
-            "domain_VDD_drop_v": 0.17480000000000007,
-            "domain_VDD_drop_percent": 19.422222,
+            "domain_VDD_drop_v": 0.06713778,
+            "domain_VDD_drop_percent": 7.459753,
+            "domain_VDDIO_nominal_v": 1.8,
+            "domain_VDDIO_drop_v": 0.06920000000000015,
+            "domain_VDDIO_drop_percent": 3.844444,
+            "domain_VSS_nominal_v": 0.9,
+            "domain_VSS_bounce_v": 0.02953401,
+            "domain_VSS_bounce_percent": 3.281557,
+            "domain_VSSIO_nominal_v": 1.8,
+            "domain_VSSIO_bounce_v": 0.0407,
+            "domain_VSSIO_bounce_percent": 2.261111,
+            "limiting_power_domain": "VDD",
+            "limiting_ground_domain": "VSS",
+            "gate_metric": "combined_supply_loss_upper_bound",
+            "max_combined_loss_percent": 15.0,
+            "worst_combined_loss_v": 0.09667179,
+            "worst_combined_loss_percent": 10.74131,
+            "limiting_supply_pair": "VDD_VSS",
+            "combined_bound_method": "independent_max_drop_plus_max_ground_magnitude",
+            "combined_VDDIO_VSSIO_loss_v": 0.1099,
+            "combined_VDDIO_VSSIO_loss_percent": 6.105556,
+            "combined_VDD_VSS_loss_v": 0.09667179,
+            "combined_VDD_VSS_loss_percent": 10.74131,
+            "gate_policy_sha256": "f293dea57869f5832bca1ca54c2d8d3575078a5cea3233ffab82f57f2a89e93e",
             "activity_status": "PASS",
             "net_coverage_percent": 100.0,
             "input_coverage_percent": 100.0,
-            "idle_net_percent": 13.011542
+            "idle_net_percent": 13.011542,
+            "database_readback": "PASS"
           },
           "ffg0p99v125c": {
             "solver_completed": true,
-            "numeric_status": "FAIL",
+            "numeric_status": "PASS",
             "powered_instances": 855,
             "disconnected_powered_instances": 0,
             "nominal_voltage_v": 0.99,
-            "worst_dynamic_drop_v": 0.2235,
-            "worst_dynamic_drop_percent": 22.575758,
-            "worst_dynamic_drop_node": "VDD ( 366.743, 412.520) M4",
-            "max_dynamic_drop_percent": 10.0,
-            "worst_ground_bounce_v": 0.3482,
-            "worst_ground_bounce_percent": 35.171717,
-            "worst_ground_bounce_node": "VSS ( 324.605, 309.740) M4",
-            "max_ground_bounce_percent": 5.0,
+            "worst_dynamic_drop_v": 0.09023714,
+            "worst_dynamic_drop_percent": 8.464646,
+            "worst_dynamic_drop_node": "VDDIO layer M3 ( 67.87 , 205.6 )",
+            "legacy_max_dynamic_drop_percent": 10.0,
+            "worst_ground_bounce_v": 0.05342308,
+            "worst_ground_bounce_percent": 3.906838,
+            "worst_ground_bounce_node": "VSSIO layer M3 ( 427.565 , 65.06 )",
+            "legacy_max_ground_bounce_percent": 5.0,
             "domain_VDD_nominal_v": 0.99,
-            "domain_VDD_drop_v": 0.22350000000000003,
-            "domain_VDD_drop_percent": 22.575758,
+            "domain_VDD_drop_v": 0.08379999999999999,
+            "domain_VDD_drop_percent": 8.464646,
+            "domain_VDDIO_nominal_v": 1.98,
+            "domain_VDDIO_drop_v": 0.09023714,
+            "domain_VDDIO_drop_percent": 4.557431,
+            "domain_VSS_nominal_v": 0.99,
+            "domain_VSS_bounce_v": 0.0386777,
+            "domain_VSS_bounce_percent": 3.906838,
+            "domain_VSSIO_nominal_v": 1.98,
+            "domain_VSSIO_bounce_v": 0.05342308,
+            "domain_VSSIO_bounce_percent": 2.698135,
+            "limiting_power_domain": "VDD",
+            "limiting_ground_domain": "VSS",
+            "gate_metric": "combined_supply_loss_upper_bound",
+            "max_combined_loss_percent": 15.0,
+            "worst_combined_loss_v": 0.1224777,
+            "worst_combined_loss_percent": 12.371485,
+            "limiting_supply_pair": "VDD_VSS",
+            "combined_bound_method": "independent_max_drop_plus_max_ground_magnitude",
+            "combined_VDDIO_VSSIO_loss_v": 0.14366022,
+            "combined_VDDIO_VSSIO_loss_percent": 7.255567,
+            "combined_VDD_VSS_loss_v": 0.1224777,
+            "combined_VDD_VSS_loss_percent": 12.371485,
+            "gate_policy_sha256": "f293dea57869f5832bca1ca54c2d8d3575078a5cea3233ffab82f57f2a89e93e",
             "activity_status": "PASS",
             "net_coverage_percent": 100.0,
             "input_coverage_percent": 100.0,
-            "idle_net_percent": 13.011542
+            "idle_net_percent": 13.011542,
+            "database_readback": "PASS"
           }
         }
-      }
+      },
+      "images": {
+        "io_port_redhawk_static_tt0p9v85c_VDD_full.gif": {
+          "mode": "static",
+          "corner": "tt0p9v85c",
+          "net": "VDD",
+          "view": "full",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "4c7859ae28d81f6adec936d24d0e3be85af4bc1c8f0e9735513f9fac0ecbb1c7",
+          "viewport_um": [
+            -20.0,
+            -23.4165,
+            770.0,
+            813.417
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_static_tt0p9v85c_VSS_full.gif": {
+          "mode": "static",
+          "corner": "tt0p9v85c",
+          "net": "VSS",
+          "view": "full",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "8eee1ee2252830811470a79a836bff46f705a026a57312a043be4a01dfaffb81",
+          "viewport_um": [
+            -20.0,
+            -23.4165,
+            770.0,
+            813.417
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_static_ffg0p99v125c_VDD_full.gif": {
+          "mode": "static",
+          "corner": "ffg0p99v125c",
+          "net": "VDD",
+          "view": "full",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "68a06498978abace0b8b7382cb5c1e7e14f59953d85eac9ddb95a95c1e477741",
+          "viewport_um": [
+            -20.0,
+            -23.4165,
+            770.0,
+            813.417
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_static_ffg0p99v125c_VSS_full.gif": {
+          "mode": "static",
+          "corner": "ffg0p99v125c",
+          "net": "VSS",
+          "view": "full",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "be4006e5ace639ea44ea9cd6db24f2f6baddcd9d0f03c4cb5aeceeea794da64a",
+          "viewport_um": [
+            -20.0,
+            -23.4165,
+            770.0,
+            813.417
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_dynamic_tt0p9v85c_VDD_full.gif": {
+          "mode": "dynamic",
+          "corner": "tt0p9v85c",
+          "net": "VDD",
+          "view": "full",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "9e2b35ee195c10abe868f70763d9c7299552ea6b8f9f98476927808cade4eac4",
+          "viewport_um": [
+            -20.0,
+            -23.4165,
+            770.0,
+            813.417
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_dynamic_tt0p9v85c_VSS_full.gif": {
+          "mode": "dynamic",
+          "corner": "tt0p9v85c",
+          "net": "VSS",
+          "view": "full",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "35087f025914bcac9859f9d0dcd5981e875ef3f4dde6e3b2c492ee4f9d4bfe5d",
+          "viewport_um": [
+            -20.0,
+            -23.4165,
+            770.0,
+            813.417
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_dynamic_ffg0p99v125c_VDD_full.gif": {
+          "mode": "dynamic",
+          "corner": "ffg0p99v125c",
+          "net": "VDD",
+          "view": "full",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "5820d0abaf96c0041c6bb06e580a8110693218c1b22af4adf10fe8f476248901",
+          "viewport_um": [
+            -20.0,
+            -23.4165,
+            770.0,
+            813.417
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_dynamic_ffg0p99v125c_VSS_full.gif": {
+          "mode": "dynamic",
+          "corner": "ffg0p99v125c",
+          "net": "VSS",
+          "view": "full",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "c98a7c21c6783971b5516243d1f2881c0688aec0b15b123a1be28eaf62eb5901",
+          "viewport_um": [
+            -20.0,
+            -23.4165,
+            770.0,
+            813.417
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_dynamic_ffg0p99v125c_VDD_core.gif": {
+          "mode": "dynamic",
+          "corner": "ffg0p99v125c",
+          "net": "VDD",
+          "view": "core",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "1edf239fcd8710fd41719281c46a7e68f8deed1a25cfdd6c16761ffca9d46707",
+          "viewport_um": [
+            285.317,
+            290.0,
+            464.683,
+            480.0
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        },
+        "io_port_redhawk_dynamic_ffg0p99v125c_VSS_core.gif": {
+          "mode": "dynamic",
+          "corner": "ffg0p99v125c",
+          "net": "VSS",
+          "view": "core",
+          "pixels": [
+            1931,
+            1833
+          ],
+          "sha256": "d8f0c5b509783a5c8fca0eefd683aff55de55e15a89ba2395d53b6d5bc3bc345",
+          "viewport_um": [
+            285.317,
+            290.0,
+            464.683,
+            480.0
+          ],
+          "renderer": "RedHawk native dump gif; retained native legend"
+        }
+      },
+      "configuration_refactor_validation": {
+        "checked_generated_files": 35,
+        "changed_files": [],
+        "purpose": "Same physical solver inputs after PG parameter centralization; no new IR solve"
+      },
+      "policy_reassessment": "Rechecked unchanged completed reports with requested combined limits; no new physical solve"
+    },
+    "drc_delta_vs_previous_layout": {
+      "mandatory_rule_count_increases": 0,
+      "recommended_rule_count_increases": [
+        {
+          "rule": "RR:RE:M7.EN.1__M7.EN.2",
+          "before": 285,
+          "after": 1054
+        },
+        {
+          "rule": "RR:RE:VIA6.EN.1__VIA6.EN.3",
+          "before": 269,
+          "after": 297
+        }
+      ]
     }
   },
-  "overall_status": "NOT_SIGNOFF_CLEAN"
+  "overall_status": "NOT_SIGNOFF_CLEAN",
+  "power_grid": {
+    "vdd": {
+      "layer": "M8",
+      "direction": "horizontal",
+      "straps": 14
+    },
+    "vss": {
+      "layer": "M9",
+      "direction": "vertical",
+      "straps": 14
+    },
+    "strap_width_um": 4,
+    "pitch_um": 10,
+    "pad_access_width_um": 8,
+    "core_drop_sites": {
+      "VDD": 186,
+      "VSS": 189
+    },
+    "lower_grid_retained": true,
+    "parameter_file": "pr_env/scripts/pdk/tsmc28hpcplus.tcl",
+    "parameters_um": {
+      "IO_UPPER_GRID_WIDTH": 4.0,
+      "IO_UPPER_GRID_PITCH": 10.0,
+      "IO_PAD_ACCESS_WIDTH": 8.0,
+      "IO_VSS_FINGER_WIDTH": 1.6,
+      "IO_CORE_FEED_WIDTH": 0.4
+    },
+    "em_qualification": "NOT_COMPLETED: applicable high-temperature metal/via limits unavailable"
+  }
 }
