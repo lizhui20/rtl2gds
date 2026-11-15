@@ -108,8 +108,10 @@ make -C pr_env physical_signoff_all b=io_port
 | 功能 SDF 回标 | 四个工艺角全部通过，开启时序检查 |
 | 布线后扫描回放 | 每角 100 patterns，四角全部通过，开启时序检查 |
 | PrimeTime | 12 场景：setup 0、hold 4、最大转换时间 0、最大电容 3 项违例；约束与检查覆盖尚未全部通过 |
-| RedHawk 静态 / 动态 IR | 未完成，当前 license 签出失败 |
+| RedHawk 静态 / 动态 IR | 许可证已恢复；IO 电源配对及功耗库接入尚未完成，暂无有效 IR 结论 |
 | GDS 层级 | 无未解析引用 |
+
+IO 和 SRAM 的原厂功耗 Liberty 已有，当前 RedHawk 流程还未完整接入。SRAM 有匹配的 0.9 V / 85°C 和 0.99 V / 125°C 视图，但没有当前另两个 IR 分析角（0.8 V、0.88 V）的对应视图。
 
 这版已完成面积优化和物理实现，但还不是全部 signoff 通过的状态。DRC/ERC 的项目 waiver 不包含时序违例；扫描回放通过也不代表 SRAM 阵列已有制造测试覆盖。当前未加入机械 seal-ring。
 

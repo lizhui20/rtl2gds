@@ -117,7 +117,21 @@
     },
     "redhawk_static_dynamic": {
       "status": "BLOCKED",
-      "reason": "Native license checkout failed"
+      "license_status": "PASS",
+      "reason": "Four-corner rerun reached design import; IO PG-arc definitions and complete power-library integration are required",
+      "static_completed": false,
+      "dynamic_completed": false,
+      "io_sram_liberty_available": true,
+      "io_sram_liberty_loaded_by_current_flow": false,
+      "sram_exact_power_corners_available": [
+        "tt0p9v85c",
+        "ffg0p99v125c"
+      ],
+      "sram_exact_power_corners_missing": [
+        "tt0p8v85c",
+        "ffg0p88v125c"
+      ],
+      "diagnostic_only": "Isolated FF probe recognizes one SRAM and 39 IO instances using foundry Liberty; not a signoff result. Standard-cell structural models remain incomplete and POC supply modeling is unresolved."
     }
   },
   "overall_status": "NOT_SIGNOFF_CLEAN"
