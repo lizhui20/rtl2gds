@@ -42,17 +42,17 @@
 
 ## RTL2GDS Flow
 
-当前实例是 **TSMC 28HPC+（N28）工艺的 `io_port`**：通过串行接口控制 GPIO 和 4 KiB 寄存器缓存，完成从 RTL、综合、DFT 到布局布线、GDS 导出和物理验证的流程。
+当前实例是 **TSMC 28HPC+（N28）工艺的 `io_port`**：50 MHz 串行接口控制 GPIO 和一块 4 KiB SRAM，包含完整 IO 环、bond pad，以及从 RTL 到 GDS 的实现流程。
 
 ### 最终版图
 
-![io_port 完整版图](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
+![io_port SRAM 完整版图](docs/images/rtl2gds/io_port_sram_full.png)
 
-[查看原图](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
+[查看完整原图](docs/images/rtl2gds/io_port_sram_full.png) · [核心区细节](docs/images/rtl2gds/io_port_sram_core.png)
 
-芯片尺寸 **838×838 µm**，采用 7-track 标准单元和 9M 4X2Y2R 金属栈。四周布置 **25 个信号 IO、14 个电源/地 IO 和 39 个 bond pad**；4 KiB 缓存由标准单元实现，扫描链长度为 32,934 bits。
+芯片采用 7-track 标准单元和 9M 4X2Y2R 金属栈，四周保留 **25 个信号 IO、14 个电源/地 IO 和 39 个 bond pad**。4 KiB 缓存改用 **1024×32 SRAM 宏**，外围逻辑采用一条 167 位扫描链。SRAM 通过 `model.f` 接入，宏位置由 FC 的 ML 布局功能自动选择。
 
-FC 布线与电源连通性检查通过，Formality 等价验证通过，Calibre 填充前后 LVS 比较均为 `CORRECT`。剩余 DRC/ERC 项按 waiver 记录，详细结果见[项目文档](docs/RTL2GDS.md#验证结果)。
+优化后的 die 为 **750×750 µm**，core 为 **137.9×137.9 µm**，SRAM 与逻辑合计占 74.66%。这版的验证结果见[项目说明](docs/RTL2GDS.md)。截图使用包含 SRAM、IO 和金属填充的完整 GDS。
 
 [项目介绍与运行方法](docs/RTL2GDS.md) · [流程截图](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [早期 SPI 项目](docs/RTL2GDS_SPI_2026-09.md)
 

@@ -1,37 +1,46 @@
 # io_port：带 IO pad 的 N28 RTL2GDS 项目
 
-`io_port` 是一个串行接口控制的 GPIO 与寄存器缓存设计，采用 TSMC 28HPC+ 工艺。工程覆盖 RTL 仿真、综合、DFT、布局布线、GDS 导出和物理验证，包含完整的 IO 环、bond pad 和标准单元 core。
+`io_port` 是一个串行接口控制的 GPIO 与 SRAM 设计，采用 TSMC 28HPC+ 工艺。工程覆盖 RTL 仿真、综合、DFT、布局布线、GDS 导出和物理验证，包含完整的 IO 环、bond pad、SRAM 宏和外围逻辑。
 
 ## 最终版图
 
-![io_port 完整版图](images/rtl2gds/io_port_layout_user_2026-11-15.png)
+![io_port 完整版图](images/rtl2gds/io_port_sram_full.png)
 
-[查看原图](images/rtl2gds/io_port_layout_user_2026-11-15.png)
+[查看原图](images/rtl2gds/io_port_sram_full.png)
 
 | 项目 | 参数 |
 | --- | --- |
 | 工艺 | TSMC 28HPC+，7-track 标准单元 |
 | 金属栈 | 9M 4X2Y2R |
-| Die | 838×838 µm |
-| 缓存 | 1024×32 位（4 KiB），标准单元实现 |
+| Die | 750×750 µm |
+| Core | 137.9×137.9 µm |
+| Floorplan 面积利用率（SRAM＋标准单元） | 74.66% |
+| FC 标准单元利用率（扣除宏及 keepout） | 13.51% |
+| SRAM | 1024×32 位（4 KiB），独立硬宏 |
 | 信号 IO / 电源与地 IO | 25 / 14 |
 | Bond pad | 39 |
-| Corner / IO filler | 4 / 128 |
+| Corner | 4 |
 | IO 节距 | 50 µm |
-| 扫描链 | 1 条，32,934 bits |
+| 扫描链 | 1 条，167 bits；不包含 SRAM 阵列 |
 
-GPIO 电路采用 7lm 视图，搭配 9M 4X2Y2R bond pad。IO 环距 die 边缘 30 µm，core margin 至少 150 µm。
+GPIO 电路采用 7lm 视图，搭配 9M 4X2Y2R bond pad。39 个 IO 均衡分布到四边，分别为 10、10、10、9 个；核心电源 pad 放在对应边的中部，以对齐缩小后的 core。相比此前 SRAM 版的 800×800 µm，die 面积缩小约 12.1%。
+
+core 独立缩紧，目标是 SRAM 与标准单元合计占 core 约 75%。这一比例包含 SRAM，与 FC 扣除宏和 keepout 后报告的标准单元利用率不同。本版 floorplan 实测分别为 **74.66%** 和 **13.51%**；后续 CTS、布线修复与填充会改变单元面积。
+
+![SRAM 与外围逻辑核心区](images/rtl2gds/io_port_sram_core.png)
+
+SRAM 由 `model.f` 指定，脚本自动接入对应的逻辑和物理库视图。FC 使用 ML 宏布局，自动比较候选的拥塞与时序并选择位置。当前设计没有 SRAM MBIST。
 
 <details>
 <summary>查看布线与焊盘分布</summary>
 
-### M1–M9 布线
+### M1–M9 布线（隐藏填充层）
 
-![io_port 布线全图](images/rtl2gds/io_port_full_routing_3200_2026-11-14.png)
+![io_port 布线全图](images/rtl2gds/io_port_sram_routing.png)
 
 ### 焊盘与开口
 
-![io_port 焊盘与开口](images/rtl2gds/io_port_full_pads_3200_2026-11-14.png)
+![io_port 焊盘与开口](images/rtl2gds/io_port_sram_pads.png)
 
 </details>
 
@@ -53,7 +62,7 @@ GPIO 电路采用 7lm 视图，搭配 9M 4X2Y2R bond pad。IO 环距 die 边缘 
 | `04` | 读 GPIO 输入 |
 | `05` | 读有效写入数据的累计 XOR 校验值 |
 
-RTL 仿真覆盖全部缓存地址、GPIO、校验值、非法地址、半帧和复位。
+RTL 仿真覆盖 SRAM 全地址读写、GPIO、校验值、非法地址、半帧和复位保持。SRAM 的内容不随控制器复位清空。
 
 ## 运行方法
 
@@ -63,6 +72,8 @@ RTL 仿真覆盖全部缓存地址、GPIO、校验值、非法地址、半帧和
 
 ```tcl
 set IO_PAD 1
+set IO_PAD_COMPACT_CORE 1
+set IO_PAD_CORE_UTILIZATION 0.75
 ```
 
 ```bash
@@ -87,19 +98,22 @@ make -C pr_env physical_signoff_all b=io_port
 
 ## 验证结果
 
-| 检查 | 结果 |
+| 检查 | 本版结果 |
 | --- | --- |
 | FC 布线、PG 连通性与内部 LVS | 零违例 |
-| Formality | 等价验证通过 |
+| Formality | 332 个比较点全部通过 |
 | Calibre 填充前 / 填充后 LVS | 均为 `CORRECT` |
-| ERC | 剩余 246 条层级结果，属于指定 IO 单元的可 waive 项 |
-| 填充后 fullchip DRC | 剩余 RR、ESD 和条件提醒按项目 waiver 结论记录 |
-| Antenna / MIM antenna | 均为 0（此前 block 范围检查） |
+| DRC / ERC | 保留剩余违例，按项目 waiver 记录；ERC 为 246 条层级结果 |
+| Antenna | 通过 |
+| 功能 SDF 回标 | 四个工艺角全部通过，开启时序检查 |
+| 布线后扫描回放 | 每角 100 patterns，四角全部通过，开启时序检查 |
+| PrimeTime | 12 场景：setup 0、hold 4、最大转换时间 0、最大电容 3 项违例；约束与检查覆盖尚未全部通过 |
+| RedHawk 静态 / 动态 IR | 未完成，当前 license 签出失败 |
 | GDS 层级 | 无未解析引用 |
 
-ERC 剩余规则为 `mnpg`、`floating.nxwell_float` 和 `npvss49`，位于电源/地 IO 内；外围衬底接地问题已修复。当前版图尚未加入机械 seal-ring。
+这版已完成面积优化和物理实现，但还不是全部 signoff 通过的状态。DRC/ERC 的项目 waiver 不包含时序违例；扫描回放通过也不代表 SRAM 阵列已有制造测试覆盖。当前未加入机械 seal-ring。
 
-[详细检查记录](evidence/2026-11-14-io-port-summary.json)
+[本版参数与检查摘要](evidence/2026-11-15-io-port-sram-summary.json)
 
 ## 更多流程案例
 

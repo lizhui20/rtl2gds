@@ -1,0 +1,124 @@
+{
+  "design": "io_port",
+  "date": "2026-11-15",
+  "technology": "TSMC 28HPC+, 7-track, 9M 4X2Y2R",
+  "die_um": [
+    750,
+    750
+  ],
+  "core_um": [
+    137.9,
+    137.9
+  ],
+  "floorplan": {
+    "core_area_um2": 19016.41,
+    "sram_area_um2": 13557.2982,
+    "standard_cell_area_um2": 640.136,
+    "logic_plus_sram_occupancy_percent": 74.6588562194,
+    "fc_standard_cell_utilization_percent": 13.51,
+    "ml_selected_candidate": 114
+  },
+  "memory": {
+    "words": 1024,
+    "bits_per_word": 32,
+    "implementation": "SRAM macro",
+    "mbist": false
+  },
+  "io": {
+    "signal_pads": 25,
+    "supply_ground_pads": 14,
+    "bond_pads": 39,
+    "pads_per_side": [
+      10,
+      10,
+      10,
+      9
+    ],
+    "pitch_um": 50
+  },
+  "scan": {
+    "chains": 1,
+    "bits": 167,
+    "includes_sram_array": false
+  },
+  "layout": {
+    "file": "io_port.pnr.dummy.gds",
+    "top": "merge_io_port",
+    "sha256": "bfb7394e69e0e86e740c7be7ee7c917b40f6fe115d9961fac1935cc1115d839e",
+    "unresolved_references": 0,
+    "full_view_clip_um": [
+      -37.5,
+      -37.5,
+      787.5,
+      787.5
+    ],
+    "images": {
+      "io_port_sram_full.png": {
+        "pixels": [
+          3200,
+          3200
+        ],
+        "sha256": "922560e75ab59e83dc1b09545f3712c00fa373925b0923a915b7894f8cccf149"
+      },
+      "io_port_sram_core.png": {
+        "pixels": [
+          2400,
+          2400
+        ],
+        "sha256": "7a9579326e9c6b5bdba1ecfe02d8635cf09a592b5a8f7e14ca5909d2096178c2"
+      },
+      "io_port_sram_routing.png": {
+        "pixels": [
+          3200,
+          3200
+        ],
+        "sha256": "5fb37d371e8aa747a0822d4772d77d4400fa0141843d3933d176cbdb42a95534"
+      },
+      "io_port_sram_pads.png": {
+        "pixels": [
+          3200,
+          3200
+        ],
+        "sha256": "b07c5f626c15503e2b939f213cfc88f96ca997a77a3264fef3b01aae0627f87f"
+      }
+    }
+  },
+  "verification": {
+    "fc_drc_lvs": "PASS",
+    "formality": {
+      "status": "PASS",
+      "compare_points": 332
+    },
+    "calibre_lvs_prefill": "CORRECT",
+    "calibre_lvs_postfill": "CORRECT",
+    "drc_erc": "Findings retained under project waiver; not zero-violation results",
+    "erc_hierarchical_results": 246,
+    "antenna": "PASS",
+    "functional_sdf": {
+      "status": "PASS",
+      "corners": 4,
+      "timing_checks": true
+    },
+    "postlayout_atpg_sdf": {
+      "status": "PASS",
+      "corners": 4,
+      "patterns_per_corner": 100,
+      "timing_checks": true
+    },
+    "primetime": {
+      "status": "FAIL",
+      "scenarios": 12,
+      "setup_violating_paths": 0,
+      "hold_violating_paths": 4,
+      "max_transition_violations": 0,
+      "max_capacitance_violations": 3,
+      "quality_status": "FAIL",
+      "unwaived_quality_checks": 442
+    },
+    "redhawk_static_dynamic": {
+      "status": "BLOCKED",
+      "reason": "Native license checkout failed"
+    }
+  },
+  "overall_status": "NOT_SIGNOFF_CLEAN"
+}

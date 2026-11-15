@@ -26,17 +26,17 @@
 
 ![签核结果目录](images/rtl2gds/image7.png)
 
-## 最新 GDS 视图：io_port / TSMC N28（2026-11-14）
+## 最新 GDS 视图：io_port SRAM / TSMC N28
 
-![io_port 完整版图](images/rtl2gds/io_port_layout_user_2026-11-15.png)
+![io_port 完整版图](images/rtl2gds/io_port_sram_full.png)
 
-[查看原图](images/rtl2gds/io_port_layout_user_2026-11-15.png)
+[查看原图](images/rtl2gds/io_port_sram_full.png)
 
-838×838 µm，25 个信号 IO、14 个电源/地 IO、39 个 bond pad。
+750×750 µm，包含一块 1024×32 SRAM、25 个信号 IO、14 个电源/地 IO 和 39 个 bond pad。
 
 ## IO pad / bond pad 视图
 
-![同一最终 GDS 的焊盘及开口层视图](images/rtl2gds/io_port_full_pads_3200_2026-11-14.png)
+![同一最终 GDS 的焊盘及开口层视图](images/rtl2gds/io_port_sram_pads.png)
 
 单独显示焊盘金属和开口，便于查看四边 pad 的分布。
 

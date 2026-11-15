@@ -28,19 +28,17 @@ The bundled guide discloses a default password and fixed MAC. The maintainer sho
 
 ## RTL2GDS Flow
 
-The current example is **`io_port` in TSMC 28HPC+ (N28)**. A serial interface controls GPIO and a 4 KiB register buffer. The project covers RTL simulation, synthesis, DFT, place and route, GDS export, and physical verification.
+The current example is **`io_port` in TSMC 28HPC+ (N28)**. A 50 MHz serial interface controls GPIO and a real **1024×32 SRAM macro (4 KiB)**, with a complete IO ring and bond pads.
 
-### Final Layout
+### Final layout
 
-![Complete io_port layout](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
+![Complete io_port SRAM layout](docs/images/rtl2gds/io_port_sram_full.png)
 
-[View original image](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
+[Full-resolution layout](docs/images/rtl2gds/io_port_sram_full.png) · [Core detail](docs/images/rtl2gds/io_port_sram_core.png)
 
-The **838×838 µm** die uses 7-track standard cells and a 9M 4X2Y2R metal stack, with **25 signal IOs, 14 supply/ground IOs and 39 bond pads**. The 4 KiB buffer is built from standard cells; the scan chain contains 32,934 bits.
+The design uses 7-track standard cells and a 9M 4X2Y2R metal stack, with **25 signal IOs, 14 supply/ground IOs and 39 bond pads**. The surrounding logic has one 167-bit scan chain; the SRAM array is not part of that chain. Memory views are resolved from `model.f`, and FC ML placement selects the macro location automatically.
 
-FC routing and power connectivity checks pass, Formality equivalence passes, and Calibre prefill/postfill LVS comparisons are `CORRECT`. Remaining DRC/ERC items are recorded for waiver; see the [project details](docs/RTL2GDS.md#验证结果).
-
-[Project and commands](docs/RTL2GDS.md) · [Flow screenshots](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [Earlier SPI project](docs/RTL2GDS_SPI_2026-09.md)
+The compact layout has a **750×750 µm** die. The **137.9×137.9 µm** core has 74.66% combined SRAM and standard-cell area occupancy at floorplanning. See the [project notes](docs/RTL2GDS.md) for measured dimensions, utilization and validation results. The images show the complete GDS with SRAM, IO and metal fill.
 
 ## Verify The Environment
 
