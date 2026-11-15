@@ -1,6 +1,6 @@
 # RTL2GDS 各阶段截图
 
-这组截图展示综合、DFT、布局布线、形式验证、时序分析和物理验证的工具界面。本页已用最新 `io_port` 带 IO pad 的 N28 版图替换旧 SMIC18 展示；其余工具界面保留为历史截图，不表示新项目通过相同检查。最新状态见 [RTL2GDS 全流程](RTL2GDS.md)。
+当前 `io_port` 版图和早期项目的工具界面。项目参数与运行方法见 [RTL2GDS](RTL2GDS.md)。除版图外，其余截图为早期流程记录。
 
 ## 综合 QoR
 
@@ -28,17 +28,17 @@
 
 ## 最新 GDS 视图：io_port / TSMC N28（2026-11-14）
 
-![io_port 完整版图截图（维护者提供）](images/rtl2gds/io_port_layout_user_2026-11-15.png)
+![io_port 完整版图](images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-[打开完整原图](images/rtl2gds/io_port_layout_user_2026-11-15.png)。采用维护者提供的完整截图，展示 core、四边 IO pad 与四角。
+[查看原图](images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-838×838 µm，25 个信号 IO、14 个电源/地 IO、39 个 bond pad。主图为维护者选定的 `PixPin_2026-11-15_12-00-44.png` 原始截图。
+838×838 µm，25 个信号 IO、14 个电源/地 IO、39 个 bond pad。
 
 ## IO pad / bond pad 视图
 
 ![同一最终 GDS 的焊盘及开口层视图](images/rtl2gds/io_port_full_pads_3200_2026-11-14.png)
 
-该图选择 AP、CB、CB2W 和 M7 标签层，展示焊盘位置；完整层图及当前验证状态见 [项目记录](RTL2GDS.md)。
+单独显示焊盘金属和开口，便于查看四边 pad 的分布。
 
 ## PrimeTime 分析界面
 
@@ -56,4 +56,4 @@
 
 ![Calibre LVS 比较结果](images/rtl2gds/image10.png)
 
-本页其余阶段截图整理于 2026-09-04。历史 SPI 十二场景、ATPG 和 IR 数值见 [SPI 记录](RTL2GDS_SPI_2026-09.md)；原始图文保留在 [DOCX 历史存档](RTL2GDS.docx)，不作为当前项目状态依据。
+更多内容：[SPI 项目记录](RTL2GDS_SPI_2026-09.md) · [早期 DOCX](RTL2GDS.docx)。

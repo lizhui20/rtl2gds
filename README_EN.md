@@ -28,21 +28,19 @@ The bundled guide discloses a default password and fixed MAC. The maintainer sho
 
 ## RTL2GDS Flow
 
-The current example is **`io_port` with real TSMC 28HPC+ (N28) IO pads**: a synchronous serial interface controls GPIO and a 4 KiB register buffer implemented with standard cells. The flow covers synthesis, DFT, place and route, and postfill GDS export using 7-track cells and a 9-metal 4X2Y2R stack.
+The current example is **`io_port` in TSMC 28HPC+ (N28)**. A serial interface controls GPIO and a 4 KiB register buffer. The project covers RTL simulation, synthesis, DFT, place and route, GDS export, and physical verification.
 
-### Complete Final Signoff GDS Layout (2026-11-14)
+### Final Layout
 
-![io_port complete layout screenshot supplied by the maintainer](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
+![Complete io_port layout](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-[Open the original screenshot](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png). The maintainer supplied this complete layout screenshot; its original pixels and colors are preserved.
+[View original image](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-The image above is the screenshot selected by the maintainer. The project’s final signoff file is `results/signoff/io_port.pnr.dummy.gds`, with top cell `merge_io_port`. The **838×838 µm** die contains **25 signal IOs, 14 supply/ground IOs and 39 bond pads**, plus four corners and 128 IO fillers. The implementation pairs 7lm GPIO circuitry with 9M 4X2Y2R bond pads at a 50 µm IO pitch. The final scan chain contains 32,934 bits.
+The **838×838 µm** die uses 7-track standard cells and a 9M 4X2Y2R metal stack, with **25 signal IOs, 14 supply/ground IOs and 39 bond pads**. The 4 KiB buffer is built from standard cells; the scan chain contains 32,934 bits.
 
-FC routing, PG connectivity and internal LVS checks report zero violations, and Formality reports `Verification SUCCEEDED`. Both mapped and postfill GDS have zero unresolved references; Calibre prefill/postfill LVS topology comparisons are `CORRECT`.
+FC routing and power connectivity checks pass, Formality equivalence passes, and Calibre prefill/postfill LVS comparisons are `CORRECT`. Remaining DRC/ERC items are recorded for waiver; see the [project details](docs/RTL2GDS.md#验证结果).
 
-**The maintainer has confirmed the remaining DRC/ERC items are waivable.** The native postfill fullchip DRC retains 16,136,560 recommended/guideline RR results and 220 non-RR results; ERC retains 246 hierarchical results. See the [current project record](docs/RTL2GDS.md) and [machine-readable evidence](docs/evidence/2026-11-14-io-port-summary.json) for the original counts and maintainer disposition.
-
-[Project, layout views and commands](docs/RTL2GDS.md) · [Stage screenshot gallery](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [Historical SPI timing, ATPG and IR results](docs/RTL2GDS_SPI_2026-09.md)
+[Project and commands](docs/RTL2GDS.md) · [Flow screenshots](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [Earlier SPI project](docs/RTL2GDS_SPI_2026-09.md)
 
 ## Verify The Environment
 

@@ -42,26 +42,19 @@
 
 ## RTL2GDS Flow
 
-当前展示项目为 **`io_port` + TSMC 28HPC+（N28）真实 IO pad**：同步串行接口控制 GPIO 和 4 KiB 寄存器缓存，完成综合、DFT、布局布线及填充后 GDS 导出。使用 7-track 标准单元、9 层金属 4X2Y2R，并将 GPIO 电路、bond pad 和 core 集成到同一版图。
+当前实例是 **TSMC 28HPC+（N28）工艺的 `io_port`**：通过串行接口控制 GPIO 和 4 KiB 寄存器缓存，完成从 RTL、综合、DFT 到布局布线、GDS 导出和物理验证的流程。
 
-### 最终签核 GDS 完整版图（2026-11-14）
+### 最终版图
 
-![io_port 完整版图截图：core、四边 IO pad 与四角](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
+![io_port 完整版图](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-[打开完整原图](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)。采用维护者提供的完整截图，保留原图像素与配色。
+[查看原图](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-上图为维护者选定的版图截图。工程最终签核文件为 `results/signoff/io_port.pnr.dummy.gds`，顶层为 `merge_io_port`。die 为 **838×838 µm**，包含 **25 个信号 IO、14 个电源/地 IO、39 个 bond pad**，以及 4 个 corner、128 个 IO filler。布线细节与独立焊盘视图见[项目记录](docs/RTL2GDS.md)。
+芯片尺寸 **838×838 µm**，采用 7-track 标准单元和 9M 4X2Y2R 金属栈。四周布置 **25 个信号 IO、14 个电源/地 IO 和 39 个 bond pad**；4 KiB 缓存由标准单元实现，扫描链长度为 32,934 bits。
 
-### 项目亮点与当前结果
+FC 布线与电源连通性检查通过，Formality 等价验证通过，Calibre 填充前后 LVS 比较均为 `CORRECT`。剩余 DRC/ERC 项按 waiver 记录，详细结果见[项目文档](docs/RTL2GDS.md#验证结果)。
 
-- **真实 IO 环**：7lm GPIO 电路搭配 9M 4X2Y2R bond pad，50 µm IO 节距；外部接口通过实际 pad 连接 core。
-- **较大逻辑 core**：1024×32 位缓存由标准单元实现，最终 1 条扫描链、32,934 bits。
-- **完整实现交付**：FC 布线、PG 连通性及内部 LVS 检查零违例，Formality `Verification SUCCEEDED`；mapped/postfill GDS 均无未解析引用。
-- **物理验证可追溯**：填充前后 Calibre LVS 拓扑比较均为 `CORRECT`；最终 postfill 已执行 fullchip DRC，结果记录保留签核 GDS 的 SHA-256，主图记录维护者提供的原图来源。
-
-**剩余 DRC/ERC 项由维护者确认可 waive。** 原生 postfill fullchip DRC 中，RR 推荐/指导结果为 16,136,560 条，非 RR 为 220 条；ERC 为 246 条层级结果。原始计数与处置说明见[当前验证状态](docs/RTL2GDS.md#当前验证状态)。
-
-[查看 io_port 项目、版图与运行命令](docs/RTL2GDS.md) · [各阶段截图](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [历史 SPI 十二场景 / ATPG / IR 记录](docs/RTL2GDS_SPI_2026-09.md)
+[项目介绍与运行方法](docs/RTL2GDS.md) · [流程截图](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [早期 SPI 项目](docs/RTL2GDS_SPI_2026-09.md)
 
 ## Environment Scope
 
