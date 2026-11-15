@@ -1,0 +1,148 @@
+{
+  "design": "io_port",
+  "record_date": "2026-11-14",
+  "technology": "TSMC 28HPC+ / 9M 4X2Y2R",
+  "die_um": [
+    838,
+    838
+  ],
+  "signal_io": 25,
+  "supply_io": 14,
+  "bond_pads": 39,
+  "corners": 4,
+  "io_fillers": 128,
+  "scan_chains": 1,
+  "scan_bits": 32934,
+  "images": {
+    "routing": {
+      "path": "docs/images/rtl2gds/io_port_postfill_routing_2026-11-14.png",
+      "source": "pr_env/io_port/reports/signoff/calibredrv/postfill/routing.png",
+      "sha256": "6990237dd1fd5fbcc259f78843efecee4b092baebb27f6d21cb64a6e1bed07c0"
+    },
+    "overview": {
+      "path": "docs/images/rtl2gds/io_port_postfill_overview_2026-11-14.png",
+      "source": "pr_env/io_port/reports/signoff/calibredrv/postfill/overview.png",
+      "sha256": "d5d5c90bf9d718add56a5e7d7315b2964053a86fdf5b7230df0848e5ab21b62d"
+    },
+    "pads": {
+      "path": "docs/images/rtl2gds/io_port_postfill_pads_2026-11-14.png",
+      "source": "pr_env/io_port/reports/signoff/calibredrv/postfill/pads.png",
+      "sha256": "280310342c89fd1c637f95b45ee009c2057c4fa3254506b392f2000a59de5f9d"
+    },
+    "corner_routing": {
+      "path": "docs/images/rtl2gds/io_port_postfill_corner_routing_2026-11-14.png",
+      "source": "pr_env/io_port/reports/signoff/calibredrv/postfill/corner_routing.png",
+      "sha256": "85010961320363912290a7d28eb8e079d03d1089c43cd685adf721381ff9ab75"
+    }
+  },
+  "source_report": "pr_env/io_port/reports/signoff/signoff_review.json",
+  "scope": "Latest exported layout. Postfill DRC is fullchip; prefill DRC and antenna retain earlier block scope. Native counts are preserved; remaining DRC/ERC items are waivable per maintainer confirmation.",
+  "implementation": {
+    "fc_drc_lvs": "pass",
+    "formality": "Verification SUCCEEDED"
+  },
+  "gds_structure": {
+    "file": "pr_env/io_port/results/io_port.pnr.mapped.gds",
+    "bytes": 178774016,
+    "database_unit_m": 9.999999999999999e-10,
+    "structures": 400,
+    "geometry_elements": 1892560,
+    "unresolved_references": 0,
+    "io_pad": 1,
+    "required_io_cells_with_geometry": [
+      "FLOW_N28_OUTER_GROUND",
+      "FLOW_N28_PSUB_CONTACT",
+      "PAD50GU",
+      "PCORNER_G",
+      "PDDW04DGZ_H_G",
+      "PDDW04DGZ_V_G",
+      "PVDD1DGZ_H_G",
+      "PVDD2DGZ_V_G",
+      "PVDD2POC_H_G",
+      "PVSS1DGZ_V_G",
+      "PVSS2DGZ_V_G"
+    ],
+    "scope": "GDS structure and geometry presence only; not DRC/LVS signoff"
+  },
+  "drc_prefill": {
+    "status": "nonzero",
+    "raw_results": 18590217,
+    "nonzero_rules": 120,
+    "recommended_RR_results": 18585391,
+    "non_RR_results": 4826,
+    "scope": "block (earlier check)"
+  },
+  "drc_postfill": {
+    "status": "nonzero",
+    "raw_results": 16136780,
+    "nonzero_rules": 85,
+    "recommended_RR_results": 16136560,
+    "non_RR_results": 220,
+    "scope": "fullchip",
+    "non_RR_rules": {
+      "WITH_SEALRING_OPTION:WARNING": 1,
+      "DIODMY_L:WARNING": 1,
+      "MATCH.WARN.1": 1,
+      "MOM.R.2": 1,
+      "ESD.18g": 120,
+      "ESD.19g": 96
+    }
+  },
+  "antenna": {
+    "status": "zero",
+    "raw_results": 0,
+    "nonzero_rules": 0,
+    "recommended_RR_results": 0,
+    "non_RR_results": 0,
+    "scope": "block (earlier check)"
+  },
+  "mim_antenna": {
+    "status": "zero",
+    "raw_results": 0,
+    "nonzero_rules": 0,
+    "recommended_RR_results": 0,
+    "non_RR_results": 0,
+    "scope": "block (earlier check)"
+  },
+  "lvs_prefill": {
+    "comparison": "CORRECT",
+    "erc_coverage": "executed",
+    "erc_results": 246,
+    "erc_expanded_results": 426,
+    "rules": {
+      "mnpg": 242,
+      "floating.nxwell_float": 2,
+      "npvss49": 2
+    },
+    "freshness": "report newer than GDS (mtime only)",
+    "report": "pr_env/io_port/reports/signoff/lvs/prefill/io_port.lvs.report"
+  },
+  "lvs_postfill": {
+    "comparison": "CORRECT",
+    "erc_coverage": "executed",
+    "erc_results": 246,
+    "erc_expanded_results": 426,
+    "rules": {
+      "mnpg": 242,
+      "floating.nxwell_float": 2,
+      "npvss49": 2
+    },
+    "freshness": "report newer than GDS (mtime only)",
+    "report": "pr_env/io_port/reports/signoff/lvs/io_port.lvs.report"
+  },
+  "drv_prefill": {
+    "summary": "Input: pr_env/io_port/results/io_port.pnr.mapped.gds\nTop: io_port\nAll root cells: io_port\nCells: 400\nDatabase units per micron: 1000\nTop bbox (database units, includes text): 840 840 837160 837160\nLayers: 3 6 6.7 11 16 17 17.7 17.11 25 26 29 30 31 31.209 32 32.209 33 34 35 36.20 37.20 38.80 39.80 51 52 53 54 55.20 56.20 57.80 58.80 63.63 74 76 86.20 108 111 115.1 117.1 117.2 119 121 122 127 127.17 130.3 130.4 130.5 130.6 130.7 131 132 133 134 135 157 172 205.6 255.9 255.52\nUnresolved references: 0 \nView clip (microns): 0.84 0.84 837.16 837.16\nNative DRV images: overview.png routing.png corner.png corner_routing.png\nPad views: {pads.png layers=74 76 86.20 135} {pad_openings.png layers=76 86.20}\nN28 layer legend: AP=74/0; CB=76/0; CB2W=86/20; M7 labels=135/0.\nThis is a geometry/hierarchy review, not a DRC/LVS pass certificate.\n",
+    "input_sha256": "61b265ca77cff7817e5f9456dee8d835432a0ac3ca0750a185cd77e581b75b41  pr_env/io_port/results/io_port.pnr.mapped.gds",
+    "overview": "pr_env/io_port/reports/signoff/calibredrv/overview.png"
+  },
+  "drv_postfill": {
+    "summary": "Input: pr_env/io_port/results/signoff/io_port.pnr.dummy.gds\nTop: merge_io_port\nAll root cells: merge_io_port\nCells: 445\nDatabase units per micron: 1000\nTop bbox (database units, includes text): 605 605 837395 837395\nLayers: 3 6 6.1 6.7 11 16 17 17.1 17.7 17.11 25 26 29 30 31 31.1 31.7 31.209 32 32.1 32.7 32.209 33 33.1 33.7 34 34.1 34.7 35 35.1 35.7 36.20 36.21 37.20 37.21 38.80 38.81 39.80 39.81 51 51.1 52 52.1 53 53.1 54 54.1 55.20 56.20 57.80 58.80 63.63 74 76 86.20 108 111 115.1 117.1 117.2 119 121 122 127 127.17 130.3 130.4 130.5 130.6 130.7 131 132 133 134 135 150.1 150.2 150.3 150.4 150.5 157 165.91 165.92 165.93 165.94 165.95 172 205.6 255.9 255.52\nUnresolved references: 0 \nView clip (microns): 0.605 0.605 837.395 837.395\nNative DRV images: overview.png routing.png corner.png corner_routing.png\nPad views: {pads.png layers=74 76 86.20 135} {pad_openings.png layers=76 86.20}\nN28 layer legend: AP=74/0; CB=76/0; CB2W=86/20; M7 labels=135/0.\nThis is a geometry/hierarchy review, not a DRC/LVS pass certificate.\n",
+    "input_sha256": "471b120331b530d0c4fd81b2a90fc5b415ae2d176182e33b8608fb01b327d447  pr_env/io_port/results/signoff/io_port.pnr.dummy.gds",
+    "overview": "pr_env/io_port/reports/signoff/calibredrv/postfill/overview.png"
+  },
+  "maintainer_disposition": {
+    "date": "2026-11-14",
+    "source": "Maintainer instruction for this publication",
+    "drc_erc": "Remaining items confirmed waivable by maintainer; native tool counts remain unchanged."
+  }
+}

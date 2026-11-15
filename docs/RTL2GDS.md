@@ -1,359 +1,144 @@
-# RTL2GDS 全流程：从 RTL 到 GDS
+# RTL2GDS：io_port 带 IO pad 的 N28 实现
 
-这套工程以 **`spi_slave` + TSMC 28HPC+（N28）** 为数字设计实例，把 RTL 仿真、静态检查、综合、DFT、布局布线、时序分析、ECO、物理验证和电源完整性分析组织成一套统一的 Make/Tcl 流程。
+当前项目为 **`io_port` + TSMC 28HPC+（N28）**，包含同步串行接口、GPIO、4 KiB 寄存器缓存、真实 IO 环和 bond pad。本文记录 2026-11-14 的最终导出版图及验证结果，替换原 SMIC18 案例展示。
 
-采用 7-track 标准单元与 9 层金属 4X2Y2R，前端 `be_env`、后端 `pr_env`、仿真 `vcs_sim` 按设计名交接数据。既能执行整段流程，也能单独重跑一个阶段并打开 GUI 调试。
+## 最终版图
 
-## 1. 先看结果
+![io_port 最终 postfill GDS 的 M1–M9 布线视图](images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
 
-### GDS 版图
+上图由 **Calibre DESIGNrev** 从最终 `io_port.pnr.dummy.gds` 原生导出，选取 M1–M9 布线层，展示 core、电源网络和 IO 环。它与下面的完整层图、焊盘图来自同一份 GDS，顶层为 `merge_io_port`。
 
-![Calibre DESIGNrev 中打开的 SPI 填充后 GDS 全图](images/rtl2gds/gds_postfill_2026-09-06.png)
-
-`spi_slave.pnr.dummy.gds` 在 Calibre DESIGNrev 中打开，展示标准单元、时钟与信号布线、电源结构和 dummy fill。合并后的版图顶层为 `merge_spi_slave`。
-
-### 十二场景 PrimeTime GUI
-
-![PrimeTime GUI 同时加载十二个功能和扫描时序场景](images/rtl2gds/pt_dmsa_12_scenarios_2026-09-05.png)
-
-功能、扫描移位、扫描捕获三种模式分别展开四个 PVT/寄生组合，GUI 同时显示 **12 个场景集合**。图中各集合 `NVP=0`、`WNS=0.000`、`TNS=0.000`，可以在同一窗口切换并定位不同模式、不同角的路径。
-
-| 项目结果 | 记录 |
+| 项目 | 最终实现 |
 | --- | --- |
-| BE 三模式 PT | `func / scan_shift / scan_capture` 各自完成分析，setup/hold 为 0 |
-| PR 十二场景 STA | setup/hold 汇总为 0，max-transition、max-capacitance、max-fanout 违例为 0 |
-| 布局后 ATPG 回放 | 205 个 pattern，0 skipped、0 mismatch，开启时序检查 |
-| 布局后 ATPG 覆盖率 | test coverage 97.00%；BE ATPG 为 201 个 pattern、97.12% |
-| Formality | PnR 等价检查 `Verification SUCCEEDED` |
-| Calibre LVS | 比较结果 `CORRECT` |
-| Antenna | antenna 与 MIM antenna 报告的结果数均为 0 |
-| RedHawk | 四个角完成 static/dynamic IR 分析，活动 net/input coverage 均为 100% |
-| 工程回归 | 59 项脚本测试通过；独立小设计的 PT 联合 ECO 将受控 hold 违例从 4 修复到 0 |
+| 工艺 / 金属栈 | TSMC 28HPC+，7-track 标准单元，9M 4X2Y2R |
+| Die | 838×838 µm |
+| 缓存 | 1024×32 位（4 KiB），标准单元实现 |
+| 信号 IO | 25 |
+| 电源 / 地 IO | 14 |
+| Bond pad | 39，每个信号或电源/地 IO 配一个 |
+| Corner / IO filler | 4 / 128 |
+| IO 节距 | 50 µm |
+| 扫描链 | 1 条，32,934 bits |
+| Mapped / postfill GDS cells | 400 / 445 |
+| 未解析 GDS 引用 | 两版均为 0 |
 
-数据来自 2026-09-05 整理的工程报告与截图，汇总见[结果记录](evidence/2026-09-05-summary.json)。
+### 完整层视图
 
-## 2. 项目亮点
+![io_port 最终 postfill GDS 的完整层视图](images/rtl2gds/io_port_postfill_overview_2026-11-14.png)
 
-### 一套入口串联多种 EDA 工具
+完整层图包含器件、互连及 dummy fill；高密度图形叠加后，独立的布线与焊盘视图更便于检查结构。
 
-使用 `gmake <target> b=<design>` 统一选择设计和阶段。BE、PR、VCS 各自维护设计目录，网表、约束、扫描信息、SPEF、SDF 和 FSDB 按固定位置交接。
+### IO 与 bond pad
 
-### 功能与 DFT 三模式约束贯通
+![io_port 最终 GDS 的焊盘与开口层视图](images/rtl2gds/io_port_postfill_pads_2026-11-14.png)
 
-FC 在功能模式完成综合，BE PT 分别运行正常功能、扫描移位和扫描捕获，导出 **三份完整 SDC**。PR 软链接这些约束，通过模式清单建立 MCMM 场景，实现综合、DFT、PnR、STA 和 ECO 的约束衔接。
+该视图选择 AP、CB、CB2W 和 M7 标签层，显示 39 个 bond pad 的分布。GPIO 电路采用 7lm 视图，与 9M 4X2Y2R bond pad 配套；IO 环距 die 边缘 30 µm，自动 core margin 至少 150 µm。
 
-### 十二场景 STA 与统一 GUI
+### 角部布线
 
-**3 种模式 × 4 个工艺/寄生组合 = 12 个时序场景**。PnR 再保留一个 TT 功耗场景，共 13 个场景。StarRC 四角寄生参数、PT 场景选择和模式约束统一组织；IMSA GUI 可以同时加载全部场景的路径集合。
+![io_port 最终 postfill GDS 的角部布线细节](images/rtl2gds/io_port_postfill_corner_routing_2026-11-14.png)
 
-### PT 联合 ECO，FC 完成物理实现
+最终实现还接入四个外围衬底接地点，Calibre LVS/ERC 中原来的 `floating.psub` 结果已消除。
 
-PT DMSA 联合所有场景求解 setup/hold，输出独立 **`eco.tcl`**，包含具体的单元尺寸调整、缓冲器插入和连接命令。FC 核对输入网表后执行修改、合法化和 ECO 布线，再进入提取与验证流程。
+## 设计功能
 
-### DFT 从插链走到带 SDF 的回放
+`io_port` 由 50 MHz `spi_clk` 驱动，同步串行接口控制 8 位 GPIO 输入、8 位 GPIO 输出和 4 KiB 寄存器缓存。缓存由标准单元实现并参与扫描插链。
 
-DFT Compiler 插链，TestMAX 生成 pattern，Tessent STILVerify 转换为 Verilog，VCS 执行移位、捕获、卸载与期望值比对。布局后重新生成 SPF/ATPG，配合最终网表及 SDF 完成 205 个 pattern 的时序回放。
+每帧 56 位，MSB first：`{opcode[7:0], address[15:0], data[31:0]}`。上一条命令的 32 位响应出现在下一帧前 32 位；不足 56 位就释放 CS 的帧会被丢弃。
 
-### 物理签核与活动驱动的四角 IR
-
-集成 GDS merge、Calibre dummy fill、prefill/postfill DRC 与 LVS、antenna、Formality 和 StarRC。RedHawk 使用真实门级 FSDB，自动检查活动覆盖率并分析四个角的静态和动态压降。
-
-### 工程化管理，方便重跑与迁移
-
-工艺、库、Vt、CTS、floorplan、DFT 和 IR 参数集中配置；支持矩形/L 形 floorplan、设计覆盖文件和按阶段恢复。日志与报告按设计、阶段、模式和场景分层保存，输入指纹和完成检查用于管理重跑后的结果。
-
-## 3. RTL 到 GDS 的数据流
-
-```mermaid
-flowchart TD
-    SRC[RTL / filelist / 功能 SDC / 设计配置] --> SIM[VCS RTL 仿真]
-    SRC --> VC[VC Static: Lint / CDC / RDC]
-    SRC --> SYN[BE: FC 功能模式综合]
-    SYN --> FM1[Formality: 综合等价检查]
-    SYN --> DFT[DFT Compiler: scan insertion]
-    DFT --> FM2[Formality: DFT 等价检查]
-    DFT --> ATPG[TestMAX: BE ATPG / STIL]
-    DFT --> BEPT[BE PT: func / shift / capture]
-    BEPT --> LINK[PR link: scan.v / scandef / 三份 SDC]
-    LINK --> PNR[FC: floorplan → PG → place → CTS → route → chip finish]
-    PNR --> FM3[Formality: PnR 等价检查]
-    PNR --> GDS[GDS merge / Calibre dummy fill]
-    GDS --> PV[Calibre: DRC / LVS / antenna]
-    PNR --> RC[StarRC: 四角 SPEF]
-    RC --> PT[PR PT: 十二场景 STA / 四份 SDF]
-    RC --> DMSA[PT DMSA: 联合分析 / GUI]
-    DMSA --> ECO[联合求解 → eco.tcl]
-    ECO --> APPLY[FC 应用 / 合法化 / ECO route]
-    APPLY --> PNR
-    PNR --> PAT[布局后 SPF / ATPG / STIL 转换]
-    PAT --> GLS[VCS 布局后 STIL 回放]
-    PT --> GLS
-    PT --> GATE[VCS 功能门级仿真 / FSDB]
-    GATE --> IR[RedHawk static / dynamic IR]
-```
-
-## 4. 工程结构与工具分工
-
-```text
-Project/
-├── DESIGN/          # RTL、filelist、功能 SDC、设计覆盖配置
-├── be_env/          # RTL 检查、综合、DFT、ATPG、三模式 PT/FM
-├── pr_env/          # PnR、提取、签核、DMSA/ECO、布局后 ATPG、IR
-├── vcs_sim/vcs/     # RTL、功能门级、BE/PR ATPG 编译与仿真
-└── flow_tools/      # BE/PR 共享的状态与结果检查
-```
-
-| 工具 | 在工程中的任务 |
+| Opcode | 功能 |
 | --- | --- |
-| VCS / Verdi | RTL 和门级仿真、波形生成与调试 |
-| VC Static | Lint、CDC、RDC |
-| Fusion Compiler | 功能模式综合、MCMM PnR、ECO 实现、GDS 导出 |
-| DC NXT / DFT Compiler | 扫描链插入、DFT 检查和协议生成 |
-| TestMAX / Tessent STILVerify | ATPG、STIL 处理与 Verilog pattern 转换 |
-| Formality | 综合、DFT、PnR 等价检查 |
-| StarRC / PrimeTime | 四角提取、静态时序分析、DMSA、联合 ECO |
-| Calibre | DESIGNrev、DRC、LVS、antenna、dummy fill |
-| RedHawk | 四角 static/dynamic IR 与活动质量检查 |
+| `01` | 写一个 32 位缓存字 |
+| `02` | 读一个缓存字，地址 0–1023 |
+| `03` | 写 8 位 GPIO 输出 |
+| `04` | 读取 8 位 GPIO 输入 |
+| `05` | 读取有效写入数据的累计 XOR 校验值 |
 
-本仓库提供项目展示、命令说明和截图。以下命令在虚拟机的 `Project/` 工程目录执行。
+低有效异步复位清除控制器和 GPIO；缓存内容先写后读。RTL 仿真覆盖全部缓存地址、GPIO、校验值、非法地址、半帧及复位。
 
-## 5. BE：综合、DFT、三模式 PT
+## 实现流程与运行入口
 
-```bash
-# 设计输入及 RTL 仿真
-gmake -C be_env run_prepare_inputs b=spi_slave
-gmake -C vcs_sim/vcs run_compile run_sim b=spi_slave
-
-# RTL 静态检查、综合与等价验证
-gmake -C be_env run_vc_lint run_vc_cdc run_vc_rdc b=spi_slave
-gmake -C be_env run_fc_syn b=spi_slave
-gmake -C be_env run_fm b=spi_slave
-
-# DFT 插链及等价检查：run_fm_dft 包含 run_dft_insert 前置步骤
-gmake -C be_env run_fm_dft b=spi_slave
-gmake -C be_env run_atpg b=spi_slave
-
-# 三模式 PT 与三份 SDC 导出
-gmake -C be_env run_pt_modes b=spi_slave
-```
-
-也可以分别运行：
-
-```bash
-gmake -C be_env run_func_pt b=spi_slave
-gmake -C be_env run_shift_pt b=spi_slave
-gmake -C be_env run_capture_pt b=spi_slave
-gmake -C be_env run_mode_pt b=spi_slave PT_MODE=scan_capture
-```
-
-| 模式 | SPI 控制条件 | 时序对象 |
-| --- | --- | --- |
-| `func` | `scan_en=0`、`test_mode=0` | 正常功能路径 |
-| `scan_shift` | `scan_en=1`、`test_mode=1`、复位释放 | 扫描串行移位路径及接口 |
-| `scan_capture` | `scan_en=0`、`test_mode=1`、复位释放 | 测试模式下的功能组合路径与捕获 |
-
-BE 当前运行 **3 种模式 × SS / 0.81V / 125°C 这 1 个角**，各模式读取同一份 `scan.v`，输出独立 log/report/SDC。原 `run_pt` 保留 mapped 网表与 mapped SDF 的 lib/db/NDM 功能模型导出链。
-
-SPI 的扫描时钟复用 `spi_clk`，扫描输出复用 `miso`。当前 stuck-at 协议为 100ns 周期：输入 0ns 驱动，输出 40ns 比较，时钟在 45/55ns 翻转。移位时选择扫描 SI 支路，捕获时选择功能 D 支路。
-
-## 6. 三份 SDC 如何贯通 PR
+以下命令在完整工程根目录执行，需要已配置的 EDA 工具与授权工艺库。GitHub 中的 [rtl2gds_small](../rtl2gds_small/README.md) 仍为功能削减版；本文记录完整本地工程的运行方式，不表示削减版已包含此设计与全部签核能力。
 
 ```text
-BE 功能综合 → mapped.sdc
-                  ↓
-       BE PT_MODE 选择与模式分析
-                  ↓
-     func.sdc / scan_shift.sdc / scan_capture.sdc
-                  ↓
-            pt_modes.tcl 清单
-                  ↓
-       PR inputs 软链接 → MCMM / STA / ECO
+RTL / SDC
+  → FC 综合 → DFT 插链
+  → Floorplan / 真实 IO 环 / 电源网络
+  → Placement → CTS → Route → Chip finish
+  → Formality / FC 物理检查
+  → Mapped GDS → Calibre dummy fill → Postfill GDS
+  → Calibre DRC / LVS / ERC / Antenna → DESIGNrev 版图检查
 ```
 
-BE PT 导出完整模式约束，PR 按场景选择对应 SDC，并加载自己的库角、电压、温度和寄生参数。功能 SDC 来自综合约束，扫描 SDC 根据 SPF 中的测试波形生成。`pnr.sdc` 同时保留为功能约束快照。
+带 pad 实现前，在 `pr_env/scripts/utilities/pr_user_setting.template.tcl` 中配置：
 
-```text
-be_env/spi_slave/
-├── results/spi_slave.{func,scan_shift,scan_capture}.sdc
-├── results/spi_slave.pt_modes.tcl
-├── logs/run_func_pt.log
-├── logs/run_shift_pt.log
-├── logs/run_capture_pt.log
-└── reports/pt/{func,scan_shift,scan_capture}/
+```tcl
+set IO_PAD 1
 ```
 
-## 7. PR：布局布线、物理验证与 GDS
+公共入口根据 `IO_PAD` 派生 N28 DRC 范围：开启时为 `fullchip`，关闭时为 `block`。设计阶段参数保存在 Tcl 中。
 
 ```bash
-gmake -C pr_env link b=spi_slave
-gmake -C pr_env smoke b=spi_slave
-gmake -C pr_env pnr_all b=spi_slave
-gmake -C pr_env signoff_all b=spi_slave
+# 功能仿真与完整工程入口
+bash DESIGN/io_port/run_sim.sh
+bash DESIGN/io_port/run_rtl2gds.sh
+
+# 分阶段重新实现
+make -C be_env run_fc_syn run_dft_insert b=io_port
+make -C pr_env pnr_all b=io_port
+make -C pr_env physical_signoff_all b=io_port
 ```
 
-| 阶段 | 目标 | 主要工作 |
-| --- | --- | --- |
-| 平面规划 | `run_floorplan` | die/core、参考库、模式/角与 pin 规划 |
-| 电源网络 | `run_power_mesh` | ring、mesh、rail 与 PG 连接 |
-| 放置 | `run_place` | 标准单元放置、scan-aware 优化 |
-| 时钟树 | `run_cts` | CTS、时钟路径和传播延迟控制 |
-| 布线 | `run_route` | 信号/时钟布线、时序与电气优化 |
-| 收尾 | `run_chip_finish` | filler、最终网表/DEF/SDC/SVF |
-| 等价验证 | `run_fm` | scan 与最终 PnR 网表比较 |
-| 版图交付 | `run_merge_gds`、`run_dummy_fill` | GDS 合并与 Calibre dummy fill |
-| 物理验证 | DRC / LVS prefill、postfill、antenna | 填充前后独立检查 |
-| 寄生与时序 | `run_extract_spef`、`run_pt_signoff` | StarRC 四角 SPEF 与十二场景 STA |
-
-`pnr_all` 包含 PnR 各阶段及 FM。`signoff_all` 串联：
-
-```text
-metal fill → FC DRC/LVS → GDS merge → SPEF
-→ LVS source → prefill DRC/LVS → dummy fill → postfill DRC/LVS → antenna
-→ PT signoff → 布局后 SPF → 布局后 ATPG → STIL 转换
-```
-
-NDM 按阶段保存 block label，便于恢复和 GUI 调试。行 filler、FC metal fill 和 Calibre dummy fill 分别由各自配置控制；当前 N28 默认使用 Calibre dummy fill。
-
-## 8. 十二场景 STA 与 GUI
-
-下表四个组合分别扩展到 `func`、`scan_shift`、`scan_capture`：
-
-| 基础场景 ID | PVT | SPEF | 主要检查 |
-| --- | --- | --- | --- |
-| `ss_hot_lowv_setup` | SS / 0.81V / 125°C | `cworst_125` | setup |
-| `ss_cold_lowv_setup` | SS / 0.81V / −40°C | `cworst_m40` | setup |
-| `ff_hot_highv_hold` | FF / 0.99V / 125°C | `cbest_125` | hold |
-| `ff_cold_highv_hold` | FF / 0.99V / −40°C | `cbest_m40` | hold |
-
-扫描场景名称在基础 ID 前增加 `scan_shift_` 或 `scan_capture_`。四份 SPEF 由三种模式复用；PnR 额外保留 TT / 0.90V / 25°C 功耗场景。
+已有最终 mapped GDS 时，可通过 `physical_checks_all` 重跑物理检查；已有最终 GDS 和报告时，可重新生成原生版图图像与汇总：
 
 ```bash
-# 逐场景签核报告与 SDF
-gmake -C pr_env run_pt_signoff b=spi_slave
-
-# DMSA 联合分析与全部场景 GUI
-gmake -C pr_env run_pt_dmsa b=spi_slave
-gmake -C pr_env pt_gui b=spi_slave
-
-# 恢复指定场景的完整分析环境
-gmake -C pr_env pt_gui b=spi_slave PT_SCENARIO=scan_shift_ff_cold_highv_hold
+make -C pr_env physical_checks_all b=io_port
+make -C pr_env run_calibredrv_review report_signoff_review b=io_port
 ```
 
-默认 GUI 加载全部场景的路径快照，单场景入口恢复完整 session。逐场景报告保存在 `reports/signoff/pt/scenarios/<scenario>/`；根目录保留 setup、hold、约束与电气违例汇总。四份 SDF 位于 `results/signoff/sdf/`，供门级和扫描时序回放使用。
+检查入口保留原始工具结果及退出状态。剩余 DRC/ERC 的项目处置按下节记录。
 
-## 9. PT 联合 ECO 与 FC 修复
+## 当前验证状态
 
-```bash
-# PT 联合求解并导出独立 eco.tcl
-gmake -C pr_env run_pt_eco b=spi_slave
-gmake -C pr_env pt_eco_gui b=spi_slave
+以下数值来自当前工程报告。**剩余 DRC/ERC 项由维护者确认可 waive**；此处保留工具原始计数以便追溯，可 waive 的处置说明与原生零违例结果分别记录。
 
-# FC 应用、合法化与 ECO 布线
-FC_AUTO_EXIT=1 gmake -C pr_env run_apply_pt_eco b=spi_slave
-
-# 更新实现交付与签核报告
-FC_AUTO_EXIT=1 gmake -C pr_env run_chip_finish run_fm b=spi_slave
-gmake -C pr_env signoff_all b=spi_slave
-```
-
-| ECO 入口 | 修复方式 |
+| 检查 | 结果 |
 | --- | --- |
-| `run_pt_eco` | PT DMSA 联合 setup/hold 求解，导出单元尺寸调整、插入与连接命令 |
-| `run_apply_pt_eco` | FC 核验输入基准、执行 `eco.tcl`、合法化和 ECO route |
-| `run_setup_fix_eco` | FC `route_opt` 优化 setup |
-| `run_hold_fix_eco` | 根据 PT hold 汇总或显式目标插入配置的延迟单元 |
-| `run_electrical_fix_eco` | 处理最大转换时间、电容、扇出，进行驱动调整与负载拆分 |
-| `electrical_eco_all` | 电气修复、交付更新、FM、提取、物理检查和 PT 批处理 |
+| FC 布线、PG DRC / 连通性、内部 LVS | 零违例 |
+| Formality | `Verification SUCCEEDED` |
+| Calibre prefill / postfill LVS | 拓扑比较均为 `CORRECT` |
+| ERC | 两版均为 246 条层级 / 426 条展开结果；剩余项按维护者确认可 waive |
+| Postfill fullchip DRC | 原始总数 16,136,780；85 类非零规则；剩余项按维护者确认可 waive |
+| 其中 RR 推荐 / 指导规则 | 79 类，16,136,560 条 |
+| 其中非 RR | 220 条，分类见下表 |
+| Antenna / MIM antenna | 均为 0；保留此前 block 范围检查结果 |
+| Calibre DESIGNrev | Mapped / postfill 为 400 / 445 cells，未解析引用均为 0 |
 
-DMSA 与联合 ECO 位于 PR。`run_pt_eco` 重新建立全部场景、计算具体修复方案，并保存 before/after 报告与 session；FC 实现后再进行寄生提取和时序复核。
+最新 fullchip 检查针对最终 postfill GDS；prefill DRC 与 antenna 保留此前 block 范围结果。截图和结果所对应的 GDS 哈希见下节。
+
+| Postfill 非 RR 项 | 原始数量 |
+| --- | ---: |
+| `ESD.18g` | 120 |
+| `ESD.19g` | 96 |
+| `DIODMY_L:WARNING` | 1 |
+| `WITH_SEALRING_OPTION:WARNING` | 1 |
+| `MATCH.WARN.1` | 1 |
+| `MOM.R.2` | 1 |
+
+ERC 剩余项为 `mnpg=242`、`floating.nxwell_float=2`、`npvss49=2`，定位在电源/地 IO 内。上述 DRC/ERC 项采用维护者提供的可 waive 结论，原始计数未改写为零。机械 seal-ring 尚未加入本版版图。
+
+## 图像与结果来源
+
+发布的 PNG 为 Calibre DESIGNrev 原生导出图，直接复制自完整工程的 `pr_env/io_port/reports/signoff/calibredrv/postfill/`。它们展示实际 GDS 几何；布线层图、完整层图和焊盘图通过文件名区分。
+
+最终 postfill GDS 的 SHA-256：
 
 ```text
-results/signoff/pt_dmsa/
-├── sessions/before/<scenario>/
-└── paths/before/<scenario>/
-
-results/signoff/pt_eco/
-├── sessions/{before,after}/<scenario>/
-├── paths/{before,after}/<scenario>/
-└── eco.tcl
+471b120331b530d0c4fd81b2a90fc5b415ae2d176182e33b8608fb01b327d447
 ```
 
-当前 SPI 快照没有待修复 setup/hold，生成无需修改的脚本；独立小设计测试则验证了非空 ECO：PT 在目标扫描输入插入延迟单元，将 4 条受控 hold 违例修复为 0。
+[机器可读结果与图片 SHA-256](evidence/2026-11-14-io-port-summary.json) 记录了图像来源、GDS 结构、原始检查计数及维护者处置说明。GDS、工艺库和完整工具报告保存在本地工程，仓库发布项目文档与展示图。
 
-## 10. 功能后仿真与 STIL 回放
+## 历史流程记录
 
-| 仿真 | 激励 | 主要任务 |
-| --- | --- | --- |
-| RTL 仿真 | 功能 testbench | 检查 RTL 功能与接口行为 |
-| 功能门级后仿真 | 功能 testbench + 网表/SDF | 检查实现后的功能与配置的时序行为，生成 FSDB |
-| BE ATPG 回放 | scan 网表 + ATPG pattern | 检查 scan protocol 与 pattern 逻辑 |
-| 布局后 STIL 回放 | 最终网表 + SDF + 布局后 pattern | 检查移位、捕获、卸载、期望值和时序 |
-
-```bash
-# 功能门级编译与仿真
-gmake -C vcs_sim/vcs run_gate_compile run_gate_sim b=spi_slave
-
-# PR 生成布局后 pattern，并转换为 Verilog
-FC_AUTO_EXIT=1 gmake -C pr_env prepare_atpg_postlayout b=spi_slave
-gmake -C pr_env run_atpg_postlayout b=spi_slave
-gmake -C pr_env run_postlayout_stil_to_verilog b=spi_slave
-
-# VCS 布局后编译与时序回放
-gmake -C vcs_sim/vcs run_postlayout_atpg_compile b=spi_slave
-gmake -C vcs_sim/vcs run_postlayout_atpg_sim b=spi_slave
-```
-
-布局后 ATPG 默认使用 SS/MAX SDF 并开启时序检查，现有结果为 **205 patterns、0 skipped、0 mismatch**。转换步骤按设计复位配置生成 `.sim.stil`，保留原 ATPG pattern；时序库、网表、SDF 和向量通过编译输入指纹关联。
-
-普通 gate 默认入口用于功能验证和 FSDB 生成；其时序检查开关、SDF 角及 min/max 选择在 `vcs_sim/vcs/config.mk` 配置，并写入运行记录。仿真结果集中在 `out/<design>/` 下。
-
-## 11. RedHawk 四角 static / dynamic IR
-
-```bash
-# 已有最终布局输入和门级 FSDB 后
-gmake -C pr_env redhawk_all b=spi_slave
-
-# 分别执行或查看结果
-gmake -C pr_env run_redhawk_static b=spi_slave
-gmake -C pr_env run_redhawk_dynamic b=spi_slave
-gmake -C pr_env redhawk_gui b=spi_slave REDHAWK_GUI_MODE=dynamic REDHAWK_GUI_CORNER=tt0p8v85c
-```
-
-| 分析角 | static 最差压降 | dynamic 最差压降 |
-| --- | --- | --- |
-| TT / 0.80V / 85°C | 0.012500% | 0.887500% |
-| TT / 0.90V / 85°C | 0.011111% | 0.900000% |
-| FF / 0.88V / 125°C | 0.034091% | 1.340909% |
-| FF / 0.99V / 125°C | 0.040404% | 1.515152% |
-
-四角使用真实 gate FSDB、RVT/HVT/LVT APL 模型，并记录供电压降、ground bounce、活动覆盖率与 idle-net 比例。分析频率、活动窗口和电压预算在设计配置中统一管理。
-
-## 12. 状态管理与交付物
-
-```bash
-gmake -C be_env status b=spi_slave
-gmake -C pr_env status b=spi_slave
-gmake -C pr_env pnr_status b=spi_slave
-gmake -C pr_env signoff_status b=spi_slave
-```
-
-每一步开始时更新 `.start`，完成日志与产物检查后写入 `.done`。`status` 只读核验现有记录；批处理递归检查组成阶段。`begin_*` 是 Make 内部记录步骤，常规使用直接运行对应业务目标即可。
-
-| 目录 | 内容 |
-| --- | --- |
-| `inputs/` | filelist、SDC、设计配置、handoff 软链接 |
-| `ref/`、`tech/` | 参考库、工艺、RC 视图链接 |
-| `work/` | 各工具运行目录 |
-| `logs/` | 按阶段组织的工具日志和完成标记 |
-| `reports/` | QoR、STA、DFT、FM、DRC/LVS、IR 报告 |
-| `results/` | NDM、网表、DEF、GDS、SDC、SPEF、SDF、STIL、ECO Tcl |
-
-新增设计通过 `b=<design>`、RTL/filelist、功能 SDC、DFT 参数和 PR 覆盖配置接入。矩形/L 形 floorplan、IO、Vt、CTS、ECO 单元和 IR 活动参数均可配置，便于在同一工程框架内组织多个设计。
-
-## 13. 更多截图与模拟案例
-
-[查看综合、DFT、Formality、RedHawk、RVE 等阶段截图](RTL2GDS_ARCHIVE_2026-09-04.md) · [下载初版 DOCX](RTL2GDS.docx)
-
-![14-bit TI SAR ADC 的原理图与版图展示](images/rtl2gds/image11.png)
-
-项目还包含 **14-bit、10 MS/s TI SAR ADC** 案例，使用 **SMIC 0.18µm RF** 工艺，原记录展示了原理图、版图、后仿和 Cadence signoff 流程。数字 SPI/N28 与模拟 ADC/SMIC 两个案例共同展示虚拟机的数字、模拟和混合信号设计能力。
+[2026-09 SPI / N28 流程](RTL2GDS_SPI_2026-09.md) 保留早期十二场景时序、205 patterns 回放、四角 IR 和联合 ECO 记录；这些数据属于当时的 `spi_slave`。另见[各阶段截图](RTL2GDS_ARCHIVE_2026-09-04.md)和[初版 DOCX 历史存档](RTL2GDS.docx)。

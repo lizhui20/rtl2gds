@@ -28,29 +28,19 @@ The bundled guide discloses a default password and fixed MAC. The maintainer sho
 
 ## RTL2GDS Flow
 
-The digital example uses **`spi_slave` and TSMC 28HPC+ (N28)**, with 7-track standard cells and a 9-metal 4X2Y2R stack. The project connects RTL simulation, static checks, synthesis, DFT/ATPG, place and route, parasitic extraction, timing analysis, ECO, physical verification, and power integrity analysis.
+The current example is **`io_port` with real TSMC 28HPC+ (N28) IO pads**: a synchronous serial interface controls GPIO and a 4 KiB register buffer implemented with standard cells. The flow covers synthesis, DFT, place and route, and postfill GDS export using 7-track cells and a 9-metal 4X2Y2R stack.
 
-- **One command interface:** `gmake <target> b=<design>` across `be_env`, `pr_env`, and `vcs_sim`, with per-design outputs and stage recovery.
-- **Three-mode constraints:** BE PrimeTime exports separate functional, scan-shift, and scan-capture SDCs; PR links them into MCMM, STA, and ECO.
-- **12 timing scenarios:** three modes across four SS/FF PVT and parasitic combinations. PnR retains an additional TT power scenario, for 13 scenarios in total.
-- **Joint PrimeTime ECO:** DMSA solves setup/hold across the scenarios and exports `eco.tcl`; Fusion Compiler applies the changes, legalizes placement, and performs ECO routing.
-- **DFT timing replay:** scan insertion, ATPG, STIL-to-Verilog conversion, and post-layout VCS replay with SDF. The recorded replay completed **205 patterns with zero mismatches** and timing checks enabled.
-- **Physical verification and IR:** GDS merge, dummy fill, Calibre DRC/LVS/antenna, Formality, and four-corner RedHawk static/dynamic IR using gate-level FSDB activity.
-- **Engineering controls:** configurable rectangular/L-shaped floorplans, IO, Vt, CTS, DFT, ECO, and activity settings; input fingerprints, stage checks, and **59 passing regression tests**.
+### Final Exported Layout (2026-11-14)
 
-### GDS Layout
+![io_port postfill GDS, M1–M9 routing view with core and IO ring](docs/images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
 
-![SPI postfill GDS in Calibre DESIGNrev](docs/images/rtl2gds/gds_postfill_2026-09-06.png)
+This native Calibre DESIGNrev view comes from `io_port.pnr.dummy.gds`, with top cell `merge_io_port`. The **838×838 µm** die contains **25 signal IOs, 14 supply/ground IOs and 39 bond pads**, plus four corners and 128 IO fillers. The implementation pairs 7lm GPIO circuitry with 9M 4X2Y2R bond pads at a 50 µm IO pitch. The final scan chain contains 32,934 bits.
 
-### 12-Scenario PrimeTime GUI
+FC routing, PG connectivity and internal LVS checks report zero violations, and Formality reports `Verification SUCCEEDED`. Both mapped and postfill GDS have zero unresolved references; Calibre prefill/postfill LVS topology comparisons are `CORRECT`.
 
-![PrimeTime path collections for 12 timing scenarios](docs/images/rtl2gds/pt_dmsa_12_scenarios_2026-09-05.png)
+**The maintainer has confirmed the remaining DRC/ERC items are waivable.** The native postfill fullchip DRC retains 16,136,560 recommended/guideline RR results and 220 non-RR results; ERC retains 246 hierarchical results. See the [current project record](docs/RTL2GDS.md) and [machine-readable evidence](docs/evidence/2026-11-14-io-port-summary.json) for the original counts and maintainer disposition.
 
-The 12 displayed collections show `NVP=0`, `WNS=0.000`, and `TNS=0.000`. The project also records successful PnR formal equivalence, a Calibre LVS `CORRECT` result, and four-corner IR analysis.
-
-[Complete workflow and commands](docs/RTL2GDS.md) · [Stage screenshot gallery](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [Initial DOCX archive](docs/RTL2GDS.docx)
-
-The VM also includes the schematic, layout, and post-layout simulation example of a **14-bit, 10 MS/s TI SAR ADC** using **SMIC 0.18µm RF**, demonstrating analog and mixed-signal design alongside the N28 digital flow.
+[Project, layout views and commands](docs/RTL2GDS.md) · [Stage screenshot gallery](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [Historical SPI timing, ATPG and IR results](docs/RTL2GDS_SPI_2026-09.md)
 
 ## Verify The Environment
 

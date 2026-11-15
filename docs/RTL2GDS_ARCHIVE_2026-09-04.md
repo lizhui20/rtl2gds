@@ -1,6 +1,6 @@
 # RTL2GDS 各阶段截图
 
-这组截图展示综合、DFT、布局布线、形式验证、时序分析和物理验证的工具界面。最新的 GDS、十二场景 GUI、项目亮点与命令说明见 [RTL2GDS 全流程](RTL2GDS.md)。
+这组截图展示综合、DFT、布局布线、形式验证、时序分析和物理验证的工具界面。本页已用最新 `io_port` 带 IO pad 的 N28 版图替换旧 SMIC18 展示；其余工具界面保留为历史截图，不表示新项目通过相同检查。最新状态见 [RTL2GDS 全流程](RTL2GDS.md)。
 
 ## 综合 QoR
 
@@ -26,13 +26,17 @@
 
 ![签核结果目录](images/rtl2gds/image7.png)
 
-## 最新 GDS 视图（TSMC N28）
+## 最新 GDS 视图：io_port / TSMC N28（2026-11-14）
 
-![Calibre DESIGNrev 中打开的 SPI 填充后 GDS 全图](images/rtl2gds/gds_postfill_2026-09-06.png)
+![io_port 最终填充后 GDS 的 M1–M9 布线视图](images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
 
-## GDS 视图(smic18mmrf)
+838×838 µm，25 个信号 IO、14 个电源/地 IO、39 个 bond pad。图像由 Calibre DESIGNrev 从最终 postfill GDS 原生导出。
 
-![GDS 版图视图](images/rtl2gds/image8.png)
+## IO pad / bond pad 视图
+
+![同一最终 GDS 的焊盘及开口层视图](images/rtl2gds/io_port_postfill_pads_2026-11-14.png)
+
+该图选择 AP、CB、CB2W 和 M7 标签层，展示焊盘位置；完整层图及当前验证状态见 [项目记录](RTL2GDS.md)。
 
 ## PrimeTime 分析界面
 
@@ -50,8 +54,4 @@
 
 ![Calibre LVS 比较结果](images/rtl2gds/image10.png)
 
-## TI SAR ADC
-
-![14-bit、10 MS/s TI SAR ADC 原理图与版图](images/rtl2gds/image11.png)
-
-本页保存 2026-09-04 整理的阶段截图；最新运行数据集中列于[主文档](RTL2GDS.md#1-先看结果)。原始图文另见 [DOCX 存档](RTL2GDS.docx)。
+本页其余阶段截图整理于 2026-09-04。历史 SPI 十二场景、ATPG 和 IR 数值见 [SPI 记录](RTL2GDS_SPI_2026-09.md)；原始图文保留在 [DOCX 历史存档](RTL2GDS.docx)，不作为当前项目状态依据。

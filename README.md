@@ -42,31 +42,24 @@
 
 ## RTL2GDS Flow
 
-以 **`spi_slave` + TSMC 28HPC+（N28）** 为数字实例，串联 RTL 仿真、静态检查、FC 综合、DFT/ATPG、布局布线、StarRC 提取、PrimeTime、Formality、Calibre 和 RedHawk，形成从 RTL 到 GDS 的工程流程。
+当前展示项目为 **`io_port` + TSMC 28HPC+（N28）真实 IO pad**：同步串行接口控制 GPIO 和 4 KiB 寄存器缓存，完成综合、DFT、布局布线及填充后 GDS 导出。使用 7-track 标准单元、9 层金属 4X2Y2R，并将 GPIO 电路、bond pad 和 core 集成到同一版图。
 
-### 项目亮点
+### 最终导出版图（2026-11-14）
 
-- **统一工程入口**：`gmake <target> b=<design>` 连接 `be_env`、`pr_env` 和 `vcs_sim`，支持阶段重跑、GUI 调试和按设计管理产物。
-- **三模式约束贯通**：BE 分别运行功能、扫描移位和扫描捕获 PT，输出三份完整 SDC，由 PR 软链接并用于 MCMM、STA 和 ECO。
-- **十二场景时序分析**：三模式 × 四个 SS/FF 温度与寄生组合；PnR 加入 TT 功耗角，共 13 场景，PT GUI 可同时查看十二场景路径。
-- **PT 联合 ECO**：DMSA 联合求解 setup/hold，导出独立 `eco.tcl`，FC 完成应用、合法化与 ECO 布线。
-- **DFT 时序回放**：扫描插链、ATPG、STIL 转换和带 SDF 的布局后 VCS 回放串联，现有结果为 **205 patterns、0 mismatch**。
-- **物理验证与四角 IR**：GDS merge、dummy fill、DRC/LVS/antenna、FM 和活动驱动的 RedHawk static/dynamic 分析。
-- **配置与结果管理**：矩形/L 形 floorplan、IO、Vt、CTS、DFT、ECO 和 IR 参数集中设置，配合逐场景报告、输入指纹及完成检查。
+![io_port 最终填充后 GDS 的 M1–M9 布线视图，含 core 与 IO 环](docs/images/rtl2gds/io_port_postfill_routing_2026-11-14.png)
 
-### GDS 实图
+Calibre DESIGNrev 直接从 `io_port.pnr.dummy.gds` 导出的真实几何视图，顶层为 `merge_io_port`。die 为 **838×838 µm**，包含 **25 个信号 IO、14 个电源/地 IO、39 个 bond pad**，以及 4 个 corner、128 个 IO filler。完整层视图与独立焊盘视图见[项目记录](docs/RTL2GDS.md)。
 
-![SPI 在 Calibre DESIGNrev 中打开的填充后 GDS](docs/images/rtl2gds/gds_postfill_2026-09-06.png)
+### 项目亮点与当前结果
 
-### 十二场景 PT GUI
+- **真实 IO 环**：7lm GPIO 电路搭配 9M 4X2Y2R bond pad，50 µm IO 节距；外部接口通过实际 pad 连接 core。
+- **较大逻辑 core**：1024×32 位缓存由标准单元实现，最终 1 条扫描链、32,934 bits。
+- **完整实现交付**：FC 布线、PG 连通性及内部 LVS 检查零违例，Formality `Verification SUCCEEDED`；mapped/postfill GDS 均无未解析引用。
+- **物理验证可追溯**：填充前后 Calibre LVS 拓扑比较均为 `CORRECT`；最终 postfill 已执行 fullchip DRC，截图与结果记录绑定同一 GDS 的 SHA-256。
 
-![PrimeTime 十二场景路径集合](docs/images/rtl2gds/pt_dmsa_12_scenarios_2026-09-05.png)
+**剩余 DRC/ERC 项由维护者确认可 waive。** 原生 postfill fullchip DRC 中，RR 推荐/指导结果为 16,136,560 条，非 RR 为 220 条；ERC 为 246 条层级结果。原始计数与处置说明见[当前验证状态](docs/RTL2GDS.md#当前验证状态)。
 
-图中功能、扫描移位、扫描捕获的十二个场景集合均显示 `NVP=0`、`WNS=0.000`、`TNS=0.000`。工程同时记录了 PnR Formality 等价通过、Calibre LVS `CORRECT`、四角 IR 分析和 **59 项工程回归测试通过**。
-
-[查看完整 RTL2GDS 流程与命令](docs/RTL2GDS.md) · [查看各阶段截图](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [下载初版 DOCX](docs/RTL2GDS.docx)
-
-项目还展示基于 **SMIC 0.18µm RF** 的 **14-bit、10 MS/s TI SAR ADC** 原理图、版图与后仿案例，覆盖数字、模拟和混合信号设计工作流。
+[查看 io_port 项目、版图与运行命令](docs/RTL2GDS.md) · [各阶段截图](docs/RTL2GDS_ARCHIVE_2026-09-04.md) · [历史 SPI 十二场景 / ATPG / IR 记录](docs/RTL2GDS_SPI_2026-09.md)
 
 ## Environment Scope
 

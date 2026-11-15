@@ -33,7 +33,7 @@
 | 电源完整性 | Synopsys RedHawk | solver / RH-lite 安装入口 |
 | 物理验证 | Siemens EDA Calibre | 2025.1_16.10 |
 
-当前还检测到 Synopsys RTL Architect、WaveView、CoreTools 和 SCL 2025.03。数字 SPI 实例使用 TSMC 28HPC+（N28）配置，模拟 ADC 案例使用 SMIC 0.18µm RF。完整工具分工、三模式约束、十二场景 STA 与联合 ECO 见 [RTL2GDS 流程](RTL2GDS.md)。
+当前还检测到 Synopsys RTL Architect、WaveView、CoreTools 和 SCL 2025.03。当前 `io_port` 实例使用 TSMC 28HPC+（N28），包含真实 IO 环和 bond pad；最新实现与检查状态见 [RTL2GDS 流程](RTL2GDS.md)。三模式约束、十二场景 STA 与联合 ECO 的历史 SPI 结果见 [2026-09 记录](RTL2GDS_SPI_2026-09.md)。
 
 ## 采集脱敏报告
 
