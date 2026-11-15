@@ -69,23 +69,13 @@ FC 布线与电源连通性检查通过，Formality 等价验证通过，Calibre
 
 这些安装覆盖 RTL 仿真与调试、综合与形式验证、静态时序与功耗、数字实现、SPICE 仿真、模拟版图及物理验证等工作流。当前表格记录已检测到的安装目录，具体模块状态以虚拟机内的实测结果为准。
 
-```mermaid
-flowchart LR
-    RTL[RTL design] --> SIM[VCS simulation]
-    SIM --> DBG[Verdi debug]
-    DBG --> SYN[Fusion Compiler synthesis]
-    SYN --> IMP[Fusion Compiler]
-    IMP --> STA[StarRC / PrimeTime DMSA]
-    STA --> ECO[Joint ECO / FC implementation]
-    IMP --> PV2[Calibre DRC / LVS / antenna]
-    SIM --> PI[FSDB / RedHawk IR]
-
-    SCH[Analog schematic] --> SPICE[Spectre / HSPICE]
-    SPICE --> LAY[Virtuoso layout]
-    LAY --> PV[Calibre verification]
-
-    SIM -. mixed-signal verification .-> SPICE
-```
+| 设计流程 | 工具与步骤 |
+| --- | --- |
+| 数字实现 | RTL → VCS 仿真 / Verdi 调试 → Fusion Compiler 综合与布局布线 |
+| 数字验证 | StarRC 提取 → PrimeTime 时序分析与 ECO；Calibre DRC / LVS / antenna |
+| 电源完整性 | 门级仿真生成 FSDB → RedHawk IR 分析 |
+| 模拟设计 | Virtuoso 原理图 → Spectre / HSPICE 仿真 → 版图 → Calibre 验证 |
+| 混合信号 | 数字仿真与 SPICE 仿真协同验证 |
 
 当前虚拟机内部已经确认 RHEL 8.10、VMware 虚拟硬件和上述安装目录。数字流程采用 N28 工艺配置，具体阶段、输入输出和运行命令见 [RTL2GDS 文档](docs/RTL2GDS.md)。
 

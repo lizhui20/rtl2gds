@@ -66,33 +66,18 @@ DFT Compiler 插链，TestMAX 生成 pattern，Tessent STILVerify 转换为 Veri
 
 ## 3. RTL 到 GDS 的数据流
 
-```mermaid
-flowchart TD
-    SRC[RTL / filelist / 功能 SDC / 设计配置] --> SIM[VCS RTL 仿真]
-    SRC --> VC[VC Static: Lint / CDC / RDC]
-    SRC --> SYN[BE: FC 功能模式综合]
-    SYN --> FM1[Formality: 综合等价检查]
-    SYN --> DFT[DFT Compiler: scan insertion]
-    DFT --> FM2[Formality: DFT 等价检查]
-    DFT --> ATPG[TestMAX: BE ATPG / STIL]
-    DFT --> BEPT[BE PT: func / shift / capture]
-    BEPT --> LINK[PR link: scan.v / scandef / 三份 SDC]
-    LINK --> PNR[FC: floorplan → PG → place → CTS → route → chip finish]
-    PNR --> FM3[Formality: PnR 等价检查]
-    PNR --> GDS[GDS merge / Calibre dummy fill]
-    GDS --> PV[Calibre: DRC / LVS / antenna]
-    PNR --> RC[StarRC: 四角 SPEF]
-    RC --> PT[PR PT: 十二场景 STA / 四份 SDF]
-    RC --> DMSA[PT DMSA: 联合分析 / GUI]
-    DMSA --> ECO[联合求解 → eco.tcl]
-    ECO --> APPLY[FC 应用 / 合法化 / ECO route]
-    APPLY --> PNR
-    PNR --> PAT[布局后 SPF / ATPG / STIL 转换]
-    PAT --> GLS[VCS 布局后 STIL 回放]
-    PT --> GLS
-    PT --> GATE[VCS 功能门级仿真 / FSDB]
-    GATE --> IR[RedHawk static / dynamic IR]
-```
+| 阶段 | 输入与主要步骤 | 产物 / 后续检查 |
+| --- | --- | --- |
+| RTL 验证 | RTL、filelist、功能 SDC、设计配置 → VCS 仿真；VC Static Lint / CDC / RDC | 综合输入 |
+| 综合 | FC 功能模式综合 | 综合网表；Formality 等价检查 |
+| DFT | 扫描插链 → TestMAX ATPG | scan 网表、STIL；DFT 等价检查 |
+| 约束交接 | BE PT 分析 func / shift / capture → PR link | scan.v、scandef、三份 SDC |
+| 布局布线 | Floorplan → PG → Place → CTS → Route → Chip finish | PnR 网表、版图；Formality 检查 |
+| GDS 与物理验证 | GDS merge → Calibre dummy fill | DRC / LVS / antenna |
+| 寄生与时序 | StarRC 四角 SPEF → PT 十二场景 STA / DMSA | 时序报告、四份 SDF、ECO Tcl |
+| ECO | FC 应用修改 → 合法化 → ECO route | 更新 PnR 结果并重新验证 |
+| 扫描回放 | 布局后 SPF / ATPG → STIL 转换 → VCS 加载 SDF | 布局后扫描仿真结果 |
+| 电源完整性 | VCS 功能门级仿真 → FSDB → RedHawk | Static / dynamic IR 结果 |
 
 ## 4. 工程结构与工具分工
 
