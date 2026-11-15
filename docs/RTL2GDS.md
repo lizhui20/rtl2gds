@@ -4,11 +4,11 @@
 
 ## 最终签核 GDS 完整版图
 
-![io_port 最终签核 GDS 完整层视图，含 dummy fill](images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)
+![io_port 完整版图截图（维护者提供）](images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-[打开 3200×3200 完整原图](images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)。视窗覆盖完整 838×838 µm die，四边各保留 41.9 µm 留白，所有 IO pad 和四个角均位于画面内。
+[打开完整原图](images/rtl2gds/io_port_layout_user_2026-11-15.png)。采用维护者提供的完整截图，保留原始尺寸与配色，展示 core、四边 IO pad 和四个角。
 
-上图由 **Calibre DESIGNrev** 从签核输入 `results/signoff/io_port.pnr.dummy.gds` 原生导出，显示全部图层，包括器件、互连、IO 环、bond pad 和 dummy fill。顶层为 `merge_io_port`，其 SHA-256 与最终 postfill fullchip DRC 输入一致。
+上图为维护者提供并指定使用的版图截图，文件名为 `PixPin_2026-11-15_12-00-44.png`。工程最终签核 GDS 为 `results/signoff/io_port.pnr.dummy.gds`，顶层为 `merge_io_port`；其 SHA-256 与最终 postfill fullchip DRC 输入一致。
 
 | 项目 | 最终实现 |
 | --- | --- |
@@ -28,7 +28,7 @@
 
 ![同一签核 GDS 仅显示 M1–M9 布线层的辅助视图](images/rtl2gds/io_port_full_routing_3200_2026-11-14.png)
 
-该辅助图仅显示 M1–M9 drawing layers，隐藏 dummy fill 等其他图层，便于查看布线结构；首页和本页主图使用上方的完整层视图。
+该辅助图仅显示 M1–M9 drawing layers，隐藏 dummy fill 等其他图层，便于查看布线结构；首页和本页主图使用上方的维护者截图。
 
 ### IO 与 bond pad
 
@@ -112,7 +112,7 @@ make -C pr_env run_calibredrv_review report_signoff_review b=io_port
 | Antenna / MIM antenna | 均为 0；保留此前 block 范围检查结果 |
 | Calibre DESIGNrev | Mapped / postfill 为 400 / 445 cells，未解析引用均为 0 |
 
-最新 fullchip 检查针对最终 postfill GDS；prefill DRC 与 antenna 保留此前 block 范围结果。截图和结果所对应的 GDS 哈希见下节。
+最新 fullchip 检查针对最终 postfill GDS；prefill DRC 与 antenna 保留此前 block 范围结果。签核 GDS 哈希和图片来源见下节。
 
 | Postfill 非 RR 项 | 原始数量 |
 | --- | ---: |
@@ -127,7 +127,7 @@ ERC 剩余项为 `mnpg=242`、`floating.nxwell_float=2`、`npvss49=2`，定位�
 
 ## 图像与结果来源
 
-发布的 PNG 为 Calibre DESIGNrev 原生导出图，本次重新读取最终签核 GDS，按完整 die 加四周留白导出到 `pr_env/io_port/reports/validation/github_full_layout/`。三张图均为 3200×3200，视窗为 `(-41.9, -41.9)–(879.9, 879.9)` µm；主图显示全部图层，辅助布线图和焊盘图也保留整个 die 范围。
+主图由维护者提供，原文件为 `PixPin_2026-11-15_12-00-44.png`，尺寸为 1135×1095；仓库中的 PNG 与原文件逐字节一致。辅助布线图和焊盘图由 Calibre DESIGNrev 从最终签核 GDS 原生导出，保存在 `pr_env/io_port/reports/validation/github_full_layout/`，尺寸为 3200×3200，视窗为 `(-41.9, -41.9)–(879.9, 879.9)` µm。
 
 最终 postfill GDS 的 SHA-256：
 

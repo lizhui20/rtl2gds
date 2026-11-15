@@ -28,11 +28,11 @@
 
 ## 最新 GDS 视图：io_port / TSMC N28（2026-11-14）
 
-![io_port 最终签核 GDS 完整层视图，含 dummy fill](images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)
+![io_port 完整版图截图（维护者提供）](images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-[打开 3200×3200 完整原图](images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)。全图保留四边留白，覆盖全部 die、IO pad 和四角。
+[打开完整原图](images/rtl2gds/io_port_layout_user_2026-11-15.png)。采用维护者提供的完整截图，展示 core、四边 IO pad 与四角。
 
-838×838 µm，25 个信号 IO、14 个电源/地 IO、39 个 bond pad。图像由 Calibre DESIGNrev 从签核输入 `results/signoff/io_port.pnr.dummy.gds` 原生导出，显示全部图层及 dummy fill。
+838×838 µm，25 个信号 IO、14 个电源/地 IO、39 个 bond pad。主图为维护者选定的 `PixPin_2026-11-15_12-00-44.png` 原始截图。
 
 ## IO pad / bond pad 视图
 

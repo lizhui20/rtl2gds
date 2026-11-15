@@ -32,11 +32,11 @@ The current example is **`io_port` with real TSMC 28HPC+ (N28) IO pads**: a sync
 
 ### Complete Final Signoff GDS Layout (2026-11-14)
 
-![io_port final signoff GDS, all-layer view including core, IO ring and dummy fill](docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)
+![io_port complete layout screenshot supplied by the maintainer](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-[Open the full 3200×3200 image](docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png). The view includes the entire die, all four sides of the IO ring and all four corners, with a margin on every side.
+[Open the original screenshot](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png). The maintainer supplied this complete layout screenshot; its original pixels and colors are preserved.
 
-This native Calibre DESIGNrev all-layer view, including dummy fill, comes from the signoff input `results/signoff/io_port.pnr.dummy.gds`, with top cell `merge_io_port`. The **838×838 µm** die contains **25 signal IOs, 14 supply/ground IOs and 39 bond pads**, plus four corners and 128 IO fillers. The implementation pairs 7lm GPIO circuitry with 9M 4X2Y2R bond pads at a 50 µm IO pitch. The final scan chain contains 32,934 bits.
+The image above is the screenshot selected by the maintainer. The project’s final signoff file is `results/signoff/io_port.pnr.dummy.gds`, with top cell `merge_io_port`. The **838×838 µm** die contains **25 signal IOs, 14 supply/ground IOs and 39 bond pads**, plus four corners and 128 IO fillers. The implementation pairs 7lm GPIO circuitry with 9M 4X2Y2R bond pads at a 50 µm IO pitch. The final scan chain contains 32,934 bits.
 
 FC routing, PG connectivity and internal LVS checks report zero violations, and Formality reports `Verification SUCCEEDED`. Both mapped and postfill GDS have zero unresolved references; Calibre prefill/postfill LVS topology comparisons are `CORRECT`.
 

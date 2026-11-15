@@ -14,15 +14,6 @@
   "scan_chains": 1,
   "scan_bits": 32934,
   "images": {
-    "full_signoff": {
-      "path": "docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png",
-      "source": "pr_env/io_port/reports/validation/github_full_layout/full_signoff.png",
-      "sha256": "b8a8755f0ffbb50d9a584ec6572293251fdcab2038081647ff68a18ee05d76f0",
-      "dimensions": [
-        3200,
-        3200
-      ]
-    },
     "full_routing": {
       "path": "docs/images/rtl2gds/io_port_full_routing_3200_2026-11-14.png",
       "source": "pr_env/io_port/reports/validation/github_full_layout/full_routing.png",
@@ -40,6 +31,16 @@
         3200,
         3200
       ]
+    },
+    "primary_screenshot": {
+      "path": "docs/images/rtl2gds/io_port_layout_user_2026-11-15.png",
+      "source": "Maintainer-provided PixPin_2026-11-15_12-00-44.png",
+      "sha256": "8c8e663436808ab7e827417f96a1709fd46d2877640438aeed87c2e916529f06",
+      "dimensions": [
+        1135,
+        1095
+      ],
+      "processing": "None; byte-for-byte copy of supplied image"
     }
   },
   "source_report": "pr_env/io_port/reports/signoff/signoff_review.json",
@@ -179,6 +180,9 @@
       3200
     ],
     "hierarchy_depth": 99,
-    "primary_view": "all GDS layers, including dummy fill"
+    "applies_to": [
+      "full_routing",
+      "full_pads"
+    ]
   }
 }

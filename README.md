@@ -46,18 +46,18 @@
 
 ### 最终签核 GDS 完整版图（2026-11-14）
 
-![io_port 最终签核 GDS 完整层视图，含 core、IO 环及 dummy fill](docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)
+![io_port 完整版图截图：core、四边 IO pad 与四角](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)
 
-[打开 3200×3200 完整原图](docs/images/rtl2gds/io_port_full_signoff_3200_2026-11-14.png)。全图覆盖整个 die、四边 IO pad 和四个角，四周留白。
+[打开完整原图](docs/images/rtl2gds/io_port_layout_user_2026-11-15.png)。采用维护者提供的完整截图，保留原图像素与配色。
 
-Calibre DESIGNrev 直接从签核输入 `results/signoff/io_port.pnr.dummy.gds` 导出的完整层视图（含 dummy fill），顶层为 `merge_io_port`。die 为 **838×838 µm**，包含 **25 个信号 IO、14 个电源/地 IO、39 个 bond pad**，以及 4 个 corner、128 个 IO filler。布线细节与独立焊盘视图见[项目记录](docs/RTL2GDS.md)。
+上图为维护者选定的版图截图。工程最终签核文件为 `results/signoff/io_port.pnr.dummy.gds`，顶层为 `merge_io_port`。die 为 **838×838 µm**，包含 **25 个信号 IO、14 个电源/地 IO、39 个 bond pad**，以及 4 个 corner、128 个 IO filler。布线细节与独立焊盘视图见[项目记录](docs/RTL2GDS.md)。
 
 ### 项目亮点与当前结果
 
 - **真实 IO 环**：7lm GPIO 电路搭配 9M 4X2Y2R bond pad，50 µm IO 节距；外部接口通过实际 pad 连接 core。
 - **较大逻辑 core**：1024×32 位缓存由标准单元实现，最终 1 条扫描链、32,934 bits。
 - **完整实现交付**：FC 布线、PG 连通性及内部 LVS 检查零违例，Formality `Verification SUCCEEDED`；mapped/postfill GDS 均无未解析引用。
-- **物理验证可追溯**：填充前后 Calibre LVS 拓扑比较均为 `CORRECT`；最终 postfill 已执行 fullchip DRC，截图与结果记录绑定同一 GDS 的 SHA-256。
+- **物理验证可追溯**：填充前后 Calibre LVS 拓扑比较均为 `CORRECT`；最终 postfill 已执行 fullchip DRC，结果记录保留签核 GDS 的 SHA-256，主图记录维护者提供的原图来源。
 
 **剩余 DRC/ERC 项由维护者确认可 waive。** 原生 postfill fullchip DRC 中，RR 推荐/指导结果为 16,136,560 条，非 RR 为 220 条；ERC 为 246 条层级结果。原始计数与处置说明见[当前验证状态](docs/RTL2GDS.md#当前验证状态)。
 
